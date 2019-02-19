@@ -2,6 +2,7 @@ package com.superscan;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -20,7 +21,7 @@ public class FileStream {
     private boolean fileExhausted;
 
     public FileStream(String fName) {
-        file = new File(fName);
+        file = new File(Main.class.getResource(fName).getFile());
         fileExhausted = false;
         try {
             scanner = new Scanner(file);

@@ -3,9 +3,8 @@ package com.superscan;
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
 
-        FileStream stream = new FileStream("/home/levi/IdeaProjects/SuperScan/src/com/superscan/source.ss");
+        FileStream stream = new FileStream("source.ss");
         Character myChar;
         do {
             myChar = stream.getChar();
