@@ -8,6 +8,7 @@ abstract public class TokenScanner implements ScannerInterface {
     // Starting position in line for char and current position in token.
     private Integer start, pos;
     private String rejectedToken;
+    private boolean rejected;
 
     States currentState;
     States goalState;
@@ -19,54 +20,34 @@ abstract public class TokenScanner implements ScannerInterface {
      *
      * @param start Index of where the token starts in the line.
      */
-    private void setup(Integer start) {
+    public void setup(Integer start) {
         this.currentState = States.STATE_1;
+        this.pos = 0;
         this.start = start;
+        this.rejected = false;
     }
 
-    Integer getStart() {return this.start;}
-    Integer getPos() {return this.pos;}
+    public Integer getStart() {return this.start;}
+    public Integer getPos() {return this.pos;}
     public String getRejectedToken() {return this.rejectedToken;}
+    public boolean hasRejected() {return this.rejected;}
 
     /**
-     * Reject the token are reason about whether it should be treated
-     * as a single or multi character token.
-     *
-     * @param token The string which will be rejected.
-     */
-    private void reject(String token) {
-        if (errorLocation().equals(this.start)) {
-            this.rejectedToken = String.valueOf(token.charAt(0));
-            return;
-        }
-        this.rejectedToken = token;
-    }
-
-    /**
-     * Iterate over all characters in a token string.
      * If any state transition is invalid, then reject the token. Otherwise, if upon processing the last character,
      * we find ourselves in the end state, we succeed. Return the class' token. Otherwise, return INVALID.
      *
-     * @param token A String to be scanned.
-     * @param start The starting index for the current line.
+     * @param character A char to be evaluated.
      * @return a Tokens enum entry which reflects the language's acceptance of the token.
      */
-    public Tokens scan(String token, Integer start) {
-        this.setup(start);
-        this.pos = 0;
-
-        Tokens result;
-        for (Character curr : token.toCharArray()) {
-            result = transitionFunction(curr);
-            if (result.equals(Tokens.INVALID)) {
-                this.reject(token);
-                return result;
-            }
-            this.pos++;
+    public Tokens scan(Character character) {
+        Tokens result = transitionFunction(character);
+        this.pos++;
+        if (result.equals(Tokens.INVALID)) {
+            this.rejected = true;
+            return result;
         }
         if (currentState.equals(this.goalState)) return this.tokenType;
-        this.reject(token);
-        return Tokens.INVALID;
+        return result;
     }
 
     /**
@@ -76,7 +57,7 @@ abstract public class TokenScanner implements ScannerInterface {
      * @param curr The current character which to scan and evaluate
      * @return Tokens enum type. INVALID if a unsupported State transition is
      * attempted. INDETERMINATE if the decision has yet to be made. This method
-     * should not accept a state, simply transition. The calling method, {@link #scan(String, Integer)},
+     * should not accept a state, simply transition. The calling method, {@link #scan(Character)},
      * will ultimately accept a token or not.
      */
     abstract protected Tokens transitionFunction(Character curr);

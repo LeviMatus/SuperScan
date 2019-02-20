@@ -4,7 +4,7 @@ import com.superscan.enums.Tokens;
 
 interface ScannerInterface {
 
-    Tokens scan(String token, Integer start);
+    Tokens scan(Character character);
 
     /**
      * If an token is rejected, we need to know where it broke down.

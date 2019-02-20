@@ -33,6 +33,8 @@ public class FileStream {
     public boolean hasNextLine() {
         return scanner.hasNextLine();
     }
+    public Integer getCurr_node() { return this.curr_node; }
+    public Integer getCurr_char() { return this.curr_char; }
 
     private void populateNewLine() {
         String line = null;
