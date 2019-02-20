@@ -2,7 +2,6 @@ package com.superscan;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -21,7 +20,7 @@ public class FileStream {
     private boolean fileExhausted;
 
     public FileStream(String fName) {
-        file = new File(Main.class.getResource(fName).getFile());
+        file = new File(fName);
         fileExhausted = false;
         try {
             scanner = new Scanner(file);
@@ -29,7 +28,10 @@ public class FileStream {
             System.out.println("The provided file was not found. Terminating.");
             System.exit(-1);
         }
-        populateNewLine();
+    }
+
+    public boolean hasNextLine() {
+        return scanner.hasNextLine();
     }
 
     private void populateNewLine() {
@@ -67,5 +69,9 @@ public class FileStream {
                 return fetchCharacter();
             return null;
         }
+    }
+
+    public boolean isFileExhausted() {
+        return fileExhausted;
     }
 }
