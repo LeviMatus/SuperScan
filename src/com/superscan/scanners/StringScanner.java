@@ -1,6 +1,6 @@
 package com.superscan.scanners;
 
-public class StringScanner implements ScannerInterface {
+public class StringScanner extends TokenScanner {
 
     //TODO these enums should be incorporated into separate enums for the project.
     enum States {
@@ -12,41 +12,17 @@ public class StringScanner implements ScannerInterface {
         STRING, INVALID, INDETERMINATE
     }
 
-    private String token;
-    private int start, stop;
-    private States currentState;
-
-    public StringScanner(){}
-    
-    @Override
-    public void resetStates(String token) {
-        this.currentState = States.STATE_1;
-        this.token = token;
+    public StringScanner() {
+        this.goalState = States.STATE_3;
+        this.tokenType = Tokens.STRING;
     }
-    
-    //TODO: Add method for controlling passing a token char by char and maintaining information about indicies
-    //THIS METHODS SHOUDL CALL TRANSITIVE FUNCTIN AND HANDLE INVALID STATES RETURNED BY IT.
 
-    /**
-     * Iterate over all characters in a token string.
-     * If any state transition is invalid, then reject the token. Otherwise, if upon processing the last character,
-     * we find ourselves in the end state, we succeed. Return the class' token. Otherwise, return INVALID.
-     *
-     * @param token A String to be scanned
-     * @return a Tokens enum entry which reflects the language's acceptance of the token.
-     */
-    public Tokens driver(String token) {
-        Tokens result;
-        for (Character curr : token.toCharArray()) {
-            result = this.transitionFunction(curr);
-            if (result.equals(Tokens.INVALID)) return result;
-        }
-        if (currentState.equals(States.STATE_3)) return Tokens.STRING;
-        return Tokens.INVALID;
+    public Integer errorLocation() {
+        return this.getStart() + this.getPos();
     }
     
     @Override
-    public Tokens transitionFunction(Character curr) {
+    protected Tokens transitionFunction(Character curr) {
 
         switch (this.currentState) {
             case STATE_1:
