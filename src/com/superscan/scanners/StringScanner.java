@@ -1,6 +1,6 @@
 package com.superscan.scanners;
 
-public class StringScanner<T> implements ScannerInterface {
+public class StringScanner implements ScannerInterface {
 
     //TODO these enums should be incorporated into separate enums for the project.
     enum States {
@@ -9,22 +9,14 @@ public class StringScanner<T> implements ScannerInterface {
     }
 
     enum Tokens {
-        STRING, INVALID
+        STRING, INVALID, INDETERMINATE
     }
 
     private String token;
     private int start, stop;
     private States currentState;
-    private Class<T> type;
 
-    /**
-     * Create a new Scanner Object. Takes in the class of the Enum it is to return.
-     * 
-     * @param type Class of an Enum to pass in.
-     */
-    public StringScanner(Class<T> type) {
-        this.type = type;
-    }
+    public StringScanner(){}
     
     @Override
     public void resetStates(String token) {
@@ -34,140 +26,142 @@ public class StringScanner<T> implements ScannerInterface {
     
     //TODO: Add method for controlling passing a token char by char and maintaining information about indicies
     //THIS METHODS SHOUDL CALL TRANSITIVE FUNCTIN AND HANDLE INVALID STATES RETURNED BY IT.
+
+    /**
+     * Iterate over all characters in a token string.
+     * If any state transition is invalid, then reject the token. Otherwise, if upon processing the last character,
+     * we find ourselves in the end state, we succeed. Return the class' token. Otherwise, return INVALID.
+     *
+     * @param token A String to be scanned
+     * @return a Tokens enum entry which reflects the language's acceptance of the token.
+     */
+    public Tokens driver(String token) {
+        Tokens result;
+        for (Character curr : token.toCharArray()) {
+            result = this.transitionFunction(curr);
+            if (result.equals(Tokens.INVALID)) return result;
+        }
+        if (currentState.equals(States.STATE_3)) return Tokens.STRING;
+        return Tokens.INVALID;
+    }
     
     @Override
-    public T tokenType() {
-        return type.cast(Tokens.STRING);
-    }
-
-    @Override
-    public T invalidToken() {
-        return type.cast(Tokens.INVALID);
-    }
-    
-    private boolean isCharacterEqual(Character curr, Character requirement) {
-        return curr == requirement;
-    }
-
-    @Override
-    public T transitionFunction(Character curr) {
+    public Tokens transitionFunction(Character curr) {
 
         switch (this.currentState) {
             case STATE_1:
                 if (curr.equals('"')) currentState = States.STATE_2;
-                else return invalidToken();
+                else return Tokens.INVALID;
                 break;
 
             case STATE_2:
                 if (curr.equals('"')) currentState = States.STATE_3;
                 else if (curr.equals('[')) currentState = States.STATE_4;
                 else if (curr.equals('\\')) currentState = States.STATE_5;
-                else return tokenType();
+                else return Tokens.INVALID;
                 break;
-
-            // The goal state. If we are here and there are not more chars to ingest, the finish.
+                
             case STATE_3:
-                if (curr == null) return tokenType();
-                return invalidToken();
+                return Tokens.INVALID;
 
             case STATE_4:
-                if (curr == '^') currentState = States.STATE_6;
-                else return invalidToken();
+                if (curr.equals('^')) currentState = States.STATE_6;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_5:
-                if (curr == '\\') currentState = States.STATE_7;
-                else return invalidToken();
+                if (curr.equals('\\')) currentState = States.STATE_7;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_6:
-                if (curr == '\\') currentState = States.STATE_8;
-                else return invalidToken();
+                if (curr.equals('\\')) currentState = States.STATE_8;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_7:
-                if (curr == '[') currentState = States.STATE_9;
-                else return invalidToken();
+                if (curr.equals('[')) currentState = States.STATE_9;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_8:
-                if (curr == '"') currentState = States.STATE_10;
-                else return invalidToken();
+                if (curr.equals('"')) currentState = States.STATE_10;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_9:
-                if (curr == '0') currentState = States.STATE_11;
-                else if (curr == 't') currentState = States.STATE_12;
-                else return invalidToken();
+                if (curr.equals('0')) currentState = States.STATE_11;
+                else if (curr.equals('t')) currentState = States.STATE_12;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_10:
-                if (curr == ']') currentState = States.STATE_2;
-                else return invalidToken();
+                if (curr.equals(']')) currentState = States.STATE_2;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_11:
-                if (curr == '-') currentState = States.STATE_13;
-                else return invalidToken();
+                if (curr.equals('-')) currentState = States.STATE_13;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_12:
-                if (curr == 'n') currentState = States.STATE_10;
-                else return invalidToken();
+                if (curr.equals('n')) currentState = States.STATE_10;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_13:
-                if (curr == '3') currentState = States.STATE_14;
-                else return invalidToken();
+                if (curr.equals('3')) currentState = States.STATE_14;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_14:
-                if (curr == ']') currentState = States.STATE_15;
-                else return invalidToken();
+                if (curr.equals(']')) currentState = States.STATE_15;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_15:
-                if (curr == '[') currentState = States.STATE_16;
-                else return invalidToken();
+                if (curr.equals('[')) currentState = States.STATE_16;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_16:
-                if (curr == '0') currentState = States.STATE_17;
-                else return invalidToken();
+                if (curr.equals('0')) currentState = States.STATE_17;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_17:
-                if (curr == '-') currentState = States.STATE_18;
-                else return invalidToken();
+                if (curr.equals('-')) currentState = States.STATE_18;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_18:
-                if (curr == '7') currentState = States.STATE_19;
-                else return invalidToken();
+                if (curr.equals('7')) currentState = States.STATE_19;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_19:
-                if (curr == ']') currentState = States.STATE_20;
-                else return invalidToken();
+                if (curr.equals(']')) currentState = States.STATE_20;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_20:
-                if (curr == '{') currentState = States.STATE_21;
-                else return invalidToken();
+                if (curr.equals('{')) currentState = States.STATE_21;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_21:
-                if (curr == '2') currentState = States.STATE_22;
-                else return invalidToken();
+                if (curr.equals('2')) currentState = States.STATE_22;
+                else return Tokens.INVALID;
                 break;
 
             case STATE_22:
-                if (curr == '}') currentState = States.STATE_2;
-                else return invalidToken();
+                if (curr.equals('}')) currentState = States.STATE_2;
+                else return Tokens.INVALID;
                 break;
         }
 
-        return type.cast(token);
+        return Tokens.INDETERMINATE;
     }
 
 }
