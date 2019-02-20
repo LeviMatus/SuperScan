@@ -1,8 +1,10 @@
 package com.superscan.scanners;
 
+import com.superscan.enums.Tokens;
+
 interface ScannerInterface {
 
-    StringScanner.Tokens scan(String token, Integer start);
+    Tokens scan(String token, Integer start);
 
     /**
      * If an token is rejected, we need to know where it broke down.

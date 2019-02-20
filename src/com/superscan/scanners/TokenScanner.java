@@ -1,14 +1,17 @@
 package com.superscan.scanners;
 
+import com.superscan.enums.States;
+import com.superscan.enums.Tokens;
+
 abstract public class TokenScanner implements ScannerInterface {
 
     // Starting position in line for char and current position in token.
     private Integer start, pos;
     private String rejectedToken;
 
-    StringScanner.States currentState;
-    StringScanner.States goalState;
-    StringScanner.Tokens tokenType;
+    States currentState;
+    States goalState;
+    Tokens tokenType;
 
     /**
      * To be called before every scan. Ensure we start from scratch
@@ -17,7 +20,7 @@ abstract public class TokenScanner implements ScannerInterface {
      * @param start Index of where the token starts in the line.
      */
     private void setup(Integer start) {
-        this.currentState = StringScanner.States.STATE_1;
+        this.currentState = States.STATE_1;
         this.start = start;
     }
 
@@ -48,14 +51,14 @@ abstract public class TokenScanner implements ScannerInterface {
      * @param start The starting index for the current line.
      * @return a Tokens enum entry which reflects the language's acceptance of the token.
      */
-    public StringScanner.Tokens scan(String token, Integer start) {
+    public Tokens scan(String token, Integer start) {
         this.setup(start);
         this.pos = 0;
 
-        StringScanner.Tokens result;
+        Tokens result;
         for (Character curr : token.toCharArray()) {
             result = transitionFunction(curr);
-            if (result.equals(StringScanner.Tokens.INVALID)) {
+            if (result.equals(Tokens.INVALID)) {
                 this.reject(token);
                 return result;
             }
@@ -63,7 +66,7 @@ abstract public class TokenScanner implements ScannerInterface {
         }
         if (currentState.equals(this.goalState)) return this.tokenType;
         this.reject(token);
-        return StringScanner.Tokens.INVALID;
+        return Tokens.INVALID;
     }
 
     /**
@@ -76,5 +79,5 @@ abstract public class TokenScanner implements ScannerInterface {
      * should not accept a state, simply transition. The calling method, {@link #scan(String, Integer)},
      * will ultimately accept a token or not.
      */
-    abstract protected StringScanner.Tokens transitionFunction(Character curr);
+    abstract protected Tokens transitionFunction(Character curr);
 }
