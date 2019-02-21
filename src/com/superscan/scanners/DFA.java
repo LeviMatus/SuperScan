@@ -41,7 +41,7 @@ public class DFA {
                     case '\n': break; // ignore whitespace
 
                     case ';': currentState = States.STATE_42; break; // Comments
-                    case '0': currentState = States.STATE_4; break; // Number path for floats and hex/binary
+                    case '0': currentState = States.STATE_11; break; // Number path for floats and hex/binary
                     case '-':
                     case '+': currentState = States.STATE_9; break; // Number path with + or -
                     case 'e':
@@ -73,7 +73,9 @@ public class DFA {
                     case 'i': currentState = States.STATE_62; break; // IF keyword path
                     case 'c': currentState = States.STATE_64; break; // COND keyword path
                     case 'l': currentState = States.STATE_68; break; // LAMBDA or LET keyword path
-                    //TODO: Ensure IDENTIFIER transition here makes sense.
+                    // TODO: Ensure IDENTIFIER transition here makes sense.
+                    // Do we need to explicitly transition based on all possible chars here?
+                    // We could dismiss non-/377 chars upon entering the parent switch. What about non printable chars?
                     default: currentState = States.STATE_76; break; // Anything leftover must be for an identifier
                 }
 
@@ -91,6 +93,22 @@ public class DFA {
             case STATE_9:
             case STATE_10:
             case STATE_11:
+                switch (curr) {
+                    case 'b': currentState = States.STATE_2; break;
+                    case 'x': currentState = States.STATE_4; break;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9': currentState = States.STATE_12; break;
+                    case '.': currentState = States.STATE_13; break;
+                    default: return Tokens.INVALID;
+                }
             case STATE_12:
                 switch (curr) {
                     case '0':
