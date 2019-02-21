@@ -121,7 +121,11 @@ public class DFA {
             case STATE_39:
             case STATE_40:
             case STATE_41:
-            case STATE_42:
+            case STATE_42: // Comment state. If a newline breaks the comment, return to State 1.
+                if (!curr.equals('\n')) break;
+                currentState = States.STATE_1;
+                break;
+
             case STATE_43:
             case STATE_44:
             case STATE_45:
