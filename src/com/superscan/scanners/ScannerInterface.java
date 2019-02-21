@@ -2,9 +2,11 @@ package com.superscan.scanners;
 
 import com.superscan.enums.Tokens;
 
+import java.util.ArrayList;
+
 interface ScannerInterface {
 
-    Tokens scan(Character character);
+    Tokens scan(ArrayList<Character> chars);
 
     /**
      * If an token is rejected, we need to know where it broke down.

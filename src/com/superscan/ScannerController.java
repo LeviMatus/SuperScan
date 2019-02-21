@@ -40,8 +40,15 @@ public class ScannerController {
         stringScanner.setup(newStart);
     }
 
-    public void handleInvalidToken(Tokens token, TokenScanner scanner) {
+    public void handleInvalidToken(String token, TokenScanner scanner) {
         //TODO: Implement this.
+
+
+        if (scanner.errorLocation().equals(scanner.getStart())) {
+            Character singleCharToken = token.charAt(0);
+            token = singleCharToken.toString();
+        }
+        String msg = String.format("LEXICAL ERROR [%d:%d]: Invalid token `%s'", lineNo, scanner.getStart(), token);
     }
 
     public boolean tokenIsAccepted(Tokens token) {
@@ -49,17 +56,10 @@ public class ScannerController {
     }
 
     public void analyzeFile() {
-
         Tokens result = Tokens.INDETERMINATE;
-        for (Character c : chars) {
-
-            do {
-                result = stringScanner.scan(c);
-                if (tokenIsAccepted(result)) handleValidToken(result, stringScanner);
-            } while (!stringScanner.hasRejected());
-
-        }
-
+        result = stringScanner.scan(chars);
+        if (tokenIsAccepted(result)) handleValidToken(result, stringScanner);
+        else handleInvalidToken();
     }
 
     private boolean scannersExhausted() {
