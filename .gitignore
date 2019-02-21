@@ -3,7 +3,7 @@
 
 # Random things we dont want to get in from our file system
 **SuperScan.iml
-out/**
+out/
 
 # User-specific stuff
 .idea/**/workspace.xml
