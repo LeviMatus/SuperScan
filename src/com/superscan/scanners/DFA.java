@@ -93,37 +93,19 @@ public class DFA {
             case STATE_9:
             case STATE_10:
             case STATE_11:
-                switch (curr) {
-                    case 'b': currentState = States.STATE_2; break;
-                    case 'x': currentState = States.STATE_4; break;
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9': currentState = States.STATE_12; break;
-                    case '.': currentState = States.STATE_13; break;
-                    default: return Tokens.INVALID;
-                }
+                if (curr.equals('b')) currentState = States.STATE_2;
+                else if (curr.equals('x')) currentState = States.STATE_4;
+                else if (charInRange(curr, 0, 9)) currentState = States.STATE_12;
+                else if (curr.equals('.')) currentState = States.STATE_13;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_12:
-                switch (curr) {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9': break; // Loop back to State 12.
-                    case '.': currentState = States.STATE_13; break;
-                    default: return Tokens.INVALID;
-                }
+                if (charInRange(curr, 0, 9)) break;
+                else if (curr.equals('.')) currentState = States.STATE_13;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_13:
             case STATE_14:
             case STATE_15:
