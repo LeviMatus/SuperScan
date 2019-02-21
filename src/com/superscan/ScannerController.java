@@ -59,7 +59,7 @@ public class ScannerController {
         Tokens result = Tokens.INDETERMINATE;
         result = stringScanner.scan(chars);
         if (tokenIsAccepted(result)) handleValidToken(result, stringScanner);
-        else handleInvalidToken();
+//        else handleInvalidToken();
     }
 
     private boolean scannersExhausted() {

@@ -4,6 +4,10 @@ import com.superscan.enums.States;
 import com.superscan.enums.Tokens;
 import com.superscan.utils.CharUtils;
 
+/**
+ * Deprecated class. Need to use DFA instead.
+ */
+@Deprecated
 public class StringScanner extends TokenScanner {
 
     public StringScanner() {
