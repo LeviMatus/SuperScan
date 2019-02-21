@@ -3,6 +3,8 @@ package com.superscan.scanners;
 import com.superscan.enums.States;
 import com.superscan.enums.Tokens;
 
+import java.util.ArrayList;
+
 abstract public class TokenScanner implements ScannerInterface {
 
     // Starting position in line for char and current position in token.
@@ -36,17 +38,21 @@ abstract public class TokenScanner implements ScannerInterface {
      * If any state transition is invalid, then reject the token. Otherwise, if upon processing the last character,
      * we find ourselves in the end state, we succeed. Return the class' token. Otherwise, return INVALID.
      *
-     * @param character A char to be evaluated.
+     * @param chars A char to be evaluated.
      * @return a Tokens enum entry which reflects the language's acceptance of the token.
      */
-    public Tokens scan(Character character) {
-        Tokens result = transitionFunction(character);
-        this.pos++;
-        if (result.equals(Tokens.INVALID)) {
-            this.rejected = true;
-            return result;
+    public Tokens scan(ArrayList<Character> chars) { //TODO update java doc
+        Tokens result = Tokens.INVALID;
+
+        for (Character character : chars) {
+            result = transitionFunction(character);
+            this.pos++;
+            if (result.equals(Tokens.INVALID)) {
+                this.rejected = true;
+                return result;
+            }
+            if (currentState.equals(this.goalState)) return this.tokenType;
         }
-        if (currentState.equals(this.goalState)) return this.tokenType;
         return result;
     }
 
@@ -57,7 +63,7 @@ abstract public class TokenScanner implements ScannerInterface {
      * @param curr The current character which to scan and evaluate
      * @return Tokens enum type. INVALID if a unsupported State transition is
      * attempted. INDETERMINATE if the decision has yet to be made. This method
-     * should not accept a state, simply transition. The calling method, {@link #scan(Character)},
+     * should not accept a state, simply transition. The calling method, {@link #scan(ArrayList<Character>)},
      * will ultimately accept a token or not.
      */
     abstract protected Tokens transitionFunction(Character curr);
