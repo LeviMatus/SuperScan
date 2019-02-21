@@ -19,6 +19,18 @@ public class DFA {
         this.currentState = States.STATE_1;
     }
 
+    /**
+     * Convert character to a int and then compare to supplied values.
+     *
+     * @param c
+     * @param lower
+     * @param upper
+     * @return
+     */
+    private boolean charInRange(Character c, int lower, int upper) {
+        return Character.getNumericValue(c) >= lower && Character.getNumericValue(c) <= upper;
+    }
+
     protected Tokens transitionFunctin(Character curr) {
 
         switch (currentState) {
@@ -67,6 +79,10 @@ public class DFA {
 
             case STATE_2:
             case STATE_3:
+                if (curr.equals('+') || curr.equals('-')) currentState = States.STATE_6;
+                else if (charInRange(curr, 0, 9)) currentState = States.STATE_7;
+                else return Tokens.INVALID;
+
             case STATE_4:
             case STATE_5:
             case STATE_6:
