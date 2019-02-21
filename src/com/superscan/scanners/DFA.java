@@ -92,6 +92,20 @@ public class DFA {
             case STATE_10:
             case STATE_11:
             case STATE_12:
+                switch (curr) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9': break; // Loop back to State 12.
+                    case '.': currentState = States.STATE_13; break;
+                    default: return Tokens.INVALID;
+                }
             case STATE_13:
             case STATE_14:
             case STATE_15:
