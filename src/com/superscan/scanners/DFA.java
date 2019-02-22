@@ -38,7 +38,9 @@ public class DFA {
     }
 
     private boolean isHexadecimal(Character c) {
-        return charInRange(c, 0, 9) || charInRange(c, 'A', 'z');
+        return charInRange(c, 0, 9)
+                || charInRange(c, 'A', 'F')
+                || charInRange(c, 'a', 'f');
     }
 
     protected Tokens transitionFunctin(Character curr) {
@@ -98,12 +100,12 @@ public class DFA {
                 else return Tokens.INVALID;
 
             case STATE_4:
-                if (charInRange(curr, 'A', 'Z') || charInRange(curr, 0, 9))
+                if (isHexadecimal(curr))
                     currentState = States.STATE_10;
                 else return Tokens.INVALID;
                 break;
 
-            case STATE_5:
+            case STATE_5: // NUMBER float of form 0.1, .1, +/- .1, +/- 0.1
                 if (charInRange(curr, 0, 9)) break;
                 else if (curr.equals('e') || curr.equals('E')) currentState = States.STATE_3;
                 else return Tokens.INVALID;
@@ -114,11 +116,11 @@ public class DFA {
                 else return Tokens.INVALID;
                 break;
 
-            case STATE_7:
+            case STATE_7: // NUMBER of form 1e10, 1e-10, 1E+10
                 if (charInRange(curr, 0, 9)) break;
                 else return Tokens.INVALID;
 
-            case STATE_8:
+            case STATE_8: // NUMBER binary e.g. 0b01
                 if (isBinary(curr)) break;
                 else return Tokens.INVALID;
 
@@ -128,11 +130,11 @@ public class DFA {
                 else return Tokens.INVALID;
                 break;
 
-            case STATE_10:
+            case STATE_10: // NUMBER hexadecimal e.g. 0x01Fa
                 if (isHexadecimal(curr)) break;
                 else return Tokens.INVALID;
 
-            case STATE_11:
+            case STATE_11: // NUMBER 0
                 if (curr.equals('b')) currentState = States.STATE_2;
                 else if (curr.equals('x')) currentState = States.STATE_4;
                 else if (charInRange(curr, 0, 9)) currentState = States.STATE_12;
@@ -140,7 +142,7 @@ public class DFA {
                 else return Tokens.INVALID;
                 break;
 
-            case STATE_12:
+            case STATE_12: // NUMBER integer
                 if (charInRange(curr, 0, 9)) break;
                 else if (curr.equals('.')) currentState = States.STATE_13;
                 else if (curr.equals('e') || curr.equals('E')) currentState = States.STATE_3;
