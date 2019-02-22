@@ -46,8 +46,6 @@ public class DFA {
                     case '0': currentState = States.STATE_11; break; // Number path for floats and hex/binary
                     case '-':
                     case '+': currentState = States.STATE_9; break; // Number path with + or -
-                    case 'e':
-                    case 'E': currentState = States.STATE_3; break; // Number path for sci notation
                     case '1':
                     case '2':
                     case '3':
