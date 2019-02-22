@@ -87,6 +87,11 @@ public class DFA {
 
             case STATE_4:
             case STATE_5:
+                if (charInRange(curr, 0, 9)) currentState = States.STATE_5;
+                else if (curr.equals('e') || curr.equals('E')) currentState = States.STATE_3;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_6:
             case STATE_7:
             case STATE_8:
@@ -107,6 +112,10 @@ public class DFA {
                 break;
 
             case STATE_13:
+                if (charInRange(curr, 0, 9)) currentState = States.STATE_5;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_14:
             case STATE_15:
             case STATE_16:
