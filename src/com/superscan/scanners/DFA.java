@@ -135,7 +135,7 @@ public class DFA {
             case STATE_11:
                 if (curr.equals('b')) currentState = States.STATE_2;
                 else if (curr.equals('x')) currentState = States.STATE_4;
-                else if (charInRange(curr, 1, 9)) currentState = States.STATE_12;
+                else if (charInRange(curr, 0, 9)) currentState = States.STATE_12;
                 else if (curr.equals('.')) currentState = States.STATE_13;
                 else return Tokens.INVALID;
                 break;
