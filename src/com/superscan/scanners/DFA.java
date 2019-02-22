@@ -104,7 +104,7 @@ public class DFA {
                 break;
 
             case STATE_5:
-                if (charInRange(curr, 0, 9)) currentState = States.STATE_5;
+                if (charInRange(curr, 0, 9)) break;
                 else if (curr.equals('e') || curr.equals('E')) currentState = States.STATE_3;
                 else return Tokens.INVALID;
                 break;
