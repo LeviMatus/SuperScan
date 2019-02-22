@@ -84,4 +84,6 @@ public enum States {
     private Tokens goalType;
     States(Tokens goalType) {this.goalType = goalType;}
 
+    public Tokens getGoalType() {return goalType;}
+
 }
