@@ -93,6 +93,9 @@ public class DFA {
                 break;
 
             case STATE_7:
+                if (charInRange(curr, 0, 9)) break;
+                else return Tokens.INVALID;
+
             case STATE_8:
             case STATE_9:
             case STATE_10:
