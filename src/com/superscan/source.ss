@@ -1,1 +1,2 @@
-"this should pass the test" thiswillfail
+1 40 4 1
+5 888 1e10
