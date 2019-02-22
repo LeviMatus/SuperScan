@@ -110,7 +110,14 @@ public class DFA {
                 break;
 
             case STATE_6:
+                if (charInRange(curr, 0, 9)) currentState = States.STATE_7;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_7:
+                if (charInRange(curr, 0, 9)) break;
+                else return Tokens.INVALID;
+
             case STATE_8:
                 if (isBinary(curr)) break;
                 else return Tokens.INVALID;
