@@ -80,6 +80,10 @@ public class DFA {
                 }
 
             case STATE_2:
+                if (curr.equals(0) || curr.equals(1)) currentState = States.STATE_8;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_3:
                 if (curr.equals('+') || curr.equals('-')) currentState = States.STATE_6;
                 else if (charInRange(curr, 0, 9)) currentState = States.STATE_7;
