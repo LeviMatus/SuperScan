@@ -3,6 +3,8 @@ package com.superscan.scanners;
 import com.superscan.enums.States;
 import com.superscan.enums.Tokens;
 
+import static com.superscan.enums.States.STATE_5;
+
 public class DFA {
 
     private States currentState;
@@ -86,6 +88,11 @@ public class DFA {
                 else return Tokens.INVALID;
 
             case STATE_4:
+                if (charInRange(curr, 'A', 'Z') || charInRange(curr, 0, 9))
+                    currentState = States.STATE_10;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_5:
             case STATE_6:
             case STATE_7:
