@@ -111,6 +111,11 @@ public class DFA {
                 else return Tokens.INVALID;
 
             case STATE_9:
+                if (curr.equals('.')) currentState = States.STATE_13;
+                else if (charInRange(curr, 0, 9)) currentState = States.STATE_12;
+                else return Tokens.INVALID;
+                break;
+
             case STATE_10:
                 if (isHexadecimal(curr)) break;
                 else return Tokens.INVALID;
