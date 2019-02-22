@@ -3,8 +3,6 @@ package com.superscan.scanners;
 import com.superscan.enums.States;
 import com.superscan.enums.Tokens;
 
-import static com.superscan.enums.States.STATE_5;
-
 public class DFA {
 
     private States currentState;
