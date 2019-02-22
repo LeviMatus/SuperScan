@@ -33,6 +33,14 @@ public class DFA {
         return Character.getNumericValue(c) >= lower && Character.getNumericValue(c) <= upper;
     }
 
+    private boolean isBinary(Character c) {
+        return c.equals(0) || c.equals(1);
+    }
+
+    private boolean isHexadecimal(Character c) {
+        return charInRange(c, 0, 9) || charInRange(c, 'A', 'z');
+    }
+
     protected Tokens transitionFunctin(Character curr) {
 
         switch (currentState) {
@@ -99,8 +107,14 @@ public class DFA {
             case STATE_6:
             case STATE_7:
             case STATE_8:
+                if (isBinary(curr)) break;
+                else return Tokens.INVALID;
+
             case STATE_9:
             case STATE_10:
+                if (isHexadecimal(curr)) break;
+                else return Tokens.INVALID;
+
             case STATE_11:
                 if (curr.equals('b')) currentState = States.STATE_2;
                 else if (curr.equals('x')) currentState = States.STATE_4;
