@@ -1,8 +1,7 @@
 package com.superscan;
 
 import com.superscan.enums.Tokens;
-import com.superscan.scanners.StringScanner;
-import com.superscan.scanners.TokenScanner;
+import com.superscan.scanners.DFA;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,57 +12,61 @@ import java.util.Arrays;
 
 public class ScannerController {
 
-    private StringScanner stringScanner = new StringScanner();
+    private DFA dfa = new DFA();
     private ArrayList<Character> chars = new ArrayList<>();
-    private Integer lineNo;
+    private Integer lineIndex;
 
     public ScannerController(String fName) {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(Main.class.getResource(fName).getFile())))) {
             while (br.ready()) {
                 Character[] lineChars = br.readLine().chars().mapToObj(c -> (char)c).toArray(Character[]::new);
                 chars.addAll(Arrays.asList(lineChars));
+                chars.add('\n');
             }
         } catch (IOException e) {
             System.out.println("An error occurred. Ensure you supplied the correct filename and/or path.");
             System.exit(-1);
         }
-        stringScanner.setup(0);
-        lineNo = 0;
+        lineIndex = 1;
     }
 
-    public void handleValidToken(Tokens token, TokenScanner scanner) {
-        String msg = String.format("%s %d:%d", token.toString(), lineNo, scanner.getStart());
-        System.out.println(msg);
-
-        //TODO: Last thing here should be to reset scanners.
-        Integer newStart = scanner.getPos() + scanner.getStart();
-        stringScanner.setup(newStart);
-    }
-
-    public void handleInvalidToken(String token, TokenScanner scanner) {
-        //TODO: Implement this.
-
-
-        if (scanner.errorLocation().equals(scanner.getStart())) {
-            Character singleCharToken = token.charAt(0);
-            token = singleCharToken.toString();
+    private void handleValidTokens() {
+        for (Token token : dfa.getAcceptedTokens()) {
+            System.out.println(token.toString());
         }
-        String msg = String.format("LEXICAL ERROR [%d:%d]: Invalid token `%s'", lineNo, scanner.getStart(), token);
     }
 
-    public boolean tokenIsAccepted(Tokens token) {
+    private boolean handleInvalidToken() {
+        Token token = dfa.getCurrToken();
+        if (dfa.currentTokenIndex().equals(dfa.getStart())) {
+            Character singleCharToken = token.getVal().charAt(0);
+            token.setVal(singleCharToken.toString());
+        }
+        /**
+         * treat single-len errors as single-char tokens. Otherwise, it's multi-char.
+         */
+        if (dfa.getCurrToken().getVal().length() > 1 && !dfa.isAborting()) {
+            dfa.abort();
+            return false;
+        }
+        System.out.println(token);
+        return true;
+    }
+
+    private boolean tokenIsAccepted(Tokens token) {
         return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
     }
 
     public void analyzeFile() {
-        Tokens result = Tokens.INDETERMINATE;
-        result = stringScanner.scan(chars);
-        if (tokenIsAccepted(result)) handleValidToken(result, stringScanner);
-//        else handleInvalidToken();
-    }
+        Tokens tokenType = Tokens.INDETERMINATE;
 
-    private boolean scannersExhausted() {
-        return stringScanner.hasRejected();
+        for (Character c : chars) {
+            tokenType = dfa.transitionFunction(c);
+            if (tokenType.equals(Tokens.INVALID))
+                if (handleInvalidToken()) return;
+        }
+        if (!tokenIsAccepted(tokenType)) handleInvalidToken();
+        else handleValidTokens();
     }
 
 }

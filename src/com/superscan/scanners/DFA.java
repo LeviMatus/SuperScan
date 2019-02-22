@@ -1,45 +1,132 @@
 package com.superscan.scanners;
 
+import com.superscan.Token;
 import com.superscan.enums.States;
 import com.superscan.enums.Tokens;
+
+import java.util.ArrayList;
 
 public class DFA {
 
     private States currentState;
+    private Integer lineNum, start, offset;
+    private Token currToken;
+    private boolean aborting;
+    private ArrayList<Token> acceptedTokens;
 
     public DFA() {
-        this.currentState = States.STATE_1;
-    }
-
-    public void setup(Integer start) {
+        acceptedTokens = new ArrayList<>();
+        offset = 0;
+        start = lineNum = 1;
+        currToken = new Token(start, lineNum);
+        aborting = false;
         reset();
     }
 
-    public void reset() {
-        this.currentState = States.STATE_1;
+    /**
+     * begin halt sequence if an invalid token is encountered.
+     */
+    public void abort() {
+        aborting = true;
+    }
+
+    public boolean isAborting() {return aborting;}
+
+    public ArrayList<Token> getAcceptedTokens() {
+        return this.acceptedTokens;
+    }
+
+    public Token getCurrToken() {
+        return currToken;
+    }
+
+    public Integer getStart() {
+        return start;
     }
 
     /**
-     * Convert character to a int and then compare to supplied values.
-     *
-     * @param c
-     * @param lower
-     * @param upper
-     * @return
+     * Returns the index which is currently being scanned.
+     * @return index of line where token scanning is taking place
      */
+    public Integer currentTokenIndex() {
+        return this.start + this.offset;
+    }
+
+    /**
+     * Set DFA to initial state and increment start, reset offset.
+     */
+    public void reset() {
+        this.currentState = States.STATE_1;
+        this.start = this.start + this.offset;
+        this.offset = 1;
+    }
+
+    /**
+     * Finalize an accepted token with a token type.
+     */
+    public void delimitToken() {
+        currToken.setType(currentState.getGoalType());
+        acceptedTokens.add(currToken);
+        currentState = States.STATE_1;
+    }
+
+    public boolean isWhitespace(Character curr) {
+        return curr.equals(' ') || curr.equals('\n') || curr.equals('\t');
+    }
+
     private boolean charInRange(Character c, int lower, int upper) {
         return Character.getNumericValue(c) >= lower && Character.getNumericValue(c) <= upper;
     }
 
-    protected Tokens transitionFunctin(Character curr) {
+    /**
+     * newlines initialize a new line, other whitespace chars setup rows and columns for new token.
+     * @param c character to evaluate.
+     */
+    private void handleWhitespace(Character c) {
+        if (c.equals('\n')) {
+            lineNum++;
+            start = 1;
+            offset = 1;
+        } else reset();
+    }
+
+    private boolean isValidToken(Tokens token) {
+        return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
+    }
+
+    /**
+     * Given a token, transition to the next appropriate state. Handles delimiting of accepted tokens
+     * when whitespace delimiters are encountered.
+     * @param curr Character to scan
+     * @return a Tokens enum which indicates the acceptability of the token.
+     */
+    public Tokens transitionFunction(Character curr) {
+
+        if (isWhitespace(curr)) {
+            if (aborting) return Tokens.INVALID;
+
+            if (!currentState.equals(States.STATE_1)) {
+                if (isValidToken(currentState.getGoalType())) {
+                    delimitToken();
+                    handleWhitespace(curr);
+                    currToken = new Token(lineNum, start);
+                    return acceptedTokens.get(acceptedTokens.size()-1).getType();
+                }
+                return currToken.getType();
+            }
+        }
+
+        currToken.addChar(curr);
+        offset++;
+
+        if (aborting) return Tokens.INDETERMINATE; // keep scanning if we have a multi-token error.
 
         switch (currentState) {
             case STATE_1:
                 switch (curr) {
                     case ' ':
-                    case '\t':
-                    case '\n': break; // ignore whitespace
-
+                    case '\n':
+                    case '\t': handleWhitespace(curr); break; // ignore standard whitespace
                     case ';': currentState = States.STATE_42; break; // Comments
                     case '0': currentState = States.STATE_11; break; // Number path for floats and hex/binary
                     case '-':
@@ -78,6 +165,7 @@ public class DFA {
                     // We could dismiss non-/377 chars upon entering the parent switch. What about non printable chars?
                     default: currentState = States.STATE_76; break; // Anything leftover must be for an identifier
                 }
+                break;
 
             case STATE_2:
             case STATE_3:
@@ -177,9 +265,8 @@ public class DFA {
             case STATE_77:
             case STATE_78:
             case STATE_79:
-            default:
         }
-
+        return Tokens.INDETERMINATE;
     }
 
 }
