@@ -136,6 +136,7 @@ public class DFA {
             case STATE_12:
                 if (charInRange(curr, 0, 9)) break;
                 else if (curr.equals('.')) currentState = States.STATE_13;
+                else if (curr.equals('e') || curr.equals('E')) currentState = States.STATE_3;
                 else return Tokens.INVALID;
                 break;
 
