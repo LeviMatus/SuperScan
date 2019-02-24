@@ -1,5 +1,6 @@
 package com.superscan;
 
+import com.superscan.dfa.FSMImpl;
 import com.superscan.enums.Tokens;
 import com.superscan.scanners.DFA;
 import com.superscan.states.State;
@@ -18,7 +19,6 @@ public class ScannerController {
     private DFA dfa = new DFA();
     private FSMImpl fsm;
     private ArrayList<Character> chars = new ArrayList<>();
-    private Integer lineIndex;
 
     public ScannerController(String fName) {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(Main.class.getResource(fName).getFile())))) {
@@ -31,7 +31,6 @@ public class ScannerController {
             System.out.println("An error occurred. Ensure you supplied the correct filename and/or path.");
             System.exit(-1);
         }
-        lineIndex = 1;
 
         // States to belong to FSM
         State S1 = new StateImpl();
@@ -61,24 +60,25 @@ public class ScannerController {
 
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
+                Character digit = Character.forDigit(i, 10);
                 if (i == 0 || i == 1) { // binary number transitions;
-                    S2 = S2.addTransition(new TransitionImpl((char) i, S8));
-                    S8 = S8.addTransition(new TransitionImpl((char) i, S8));
+                    S2 = S2.addTransition(new TransitionImpl(digit, S8));
+                    S8 = S8.addTransition(new TransitionImpl(digit, S8));
                 }
-                if (i > 0) S1 = S1.addTransition(new TransitionImpl((char) i, S12));
-                S3 = S3.addTransition(new TransitionImpl((char) i, S7));
-                S4 = S4.addTransition(new TransitionImpl((char) i, S10));
-                S5 = S5.addTransition(new TransitionImpl((char) i, S5));
-                S6 = S6.addTransition(new TransitionImpl((char) i, S7));
-                S7 = S7.addTransition(new TransitionImpl((char) i, S7));
-                S9 = S9.addTransition(new TransitionImpl((char) i, S12));
-                S10 = S10.addTransition(new TransitionImpl((char) i, S10));
-                S11 = S11.addTransition(new TransitionImpl((char) i, S12));
-                S12 = S12.addTransition(new TransitionImpl((char) i, S12));
-                S13 = S13.addTransition(new TransitionImpl((char) i, S5));
+                if (i > 0) S1 = S1.addTransition(new TransitionImpl(digit, S12));
+                S3 = S3.addTransition(new TransitionImpl(digit, S7));
+                S4 = S4.addTransition(new TransitionImpl(digit, S10));
+                S5 = S5.addTransition(new TransitionImpl(digit, S5));
+                S6 = S6.addTransition(new TransitionImpl(digit, S7));
+                S7 = S7.addTransition(new TransitionImpl(digit, S7));
+                S9 = S9.addTransition(new TransitionImpl(digit, S12));
+                S10 = S10.addTransition(new TransitionImpl(digit, S10));
+                S11 = S11.addTransition(new TransitionImpl(digit, S12));
+                S12 = S12.addTransition(new TransitionImpl(digit, S12));
+                S13 = S13.addTransition(new TransitionImpl(digit, S5));
             }
 
-            if (Integer.parseInt("e") == ('a' + i)) {
+            if ('e' == ('a' + i)) {
                 S11 = addUpperAndLowercase(S11, S3, i);
                 S12 = addUpperAndLowercase(S12, S3, i);
                 S5 = addUpperAndLowercase(S5, S3, i);
@@ -97,7 +97,7 @@ public class ScannerController {
     }
 
     private void handleValidTokens() {
-        for (Token token : dfa.getAcceptedTokens()) {
+        for (Token token : fsm.getTokens()) {
             System.out.println(token.toString());
         }
     }
@@ -124,13 +124,16 @@ public class ScannerController {
     }
 
     public void analyzeFile() {
-        Tokens tokenType = Tokens.INDETERMINATE;
 
         for (Character c : chars) {
-            fsm.transition(c);
+            try {
+                fsm.transition(c);
+            } catch (IllegalStateException e) {
+                System.out.println("Well, shit!");
+            }
         }
 
-        if (!tokenIsAccepted(tokenType)) handleInvalidToken();
+        if (!fsm.isSatisfied()) handleInvalidToken();
         else handleValidTokens();
     }
 
