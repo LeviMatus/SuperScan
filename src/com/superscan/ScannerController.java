@@ -5,6 +5,7 @@ import com.superscan.enums.Tokens;
 import com.superscan.scanners.DFA;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
+import com.superscan.transitions.InvalidTokenException;
 import com.superscan.transitions.TransitionImpl;
 
 import java.io.BufferedReader;
@@ -128,7 +129,7 @@ public class ScannerController {
         for (Character c : chars) {
             try {
                 fsm.transition(c);
-            } catch (IllegalStateException e) {
+            } catch (InvalidTokenException e) {
                 System.out.println("Well, shit!");
             }
         }

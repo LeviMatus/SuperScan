@@ -1,6 +1,7 @@
 package com.superscan.states;
 
 import com.superscan.enums.Tokens;
+import com.superscan.transitions.InvalidTokenException;
 import com.superscan.transitions.Transition;
 
 public interface State {

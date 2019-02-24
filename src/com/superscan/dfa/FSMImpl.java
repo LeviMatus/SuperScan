@@ -3,6 +3,7 @@ package com.superscan.dfa;
 import com.superscan.Token;
 import com.superscan.states.State;
 import com.superscan.enums.Tokens;
+import com.superscan.transitions.InvalidTokenException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public final class FSMImpl implements FSM {
 
     public FSMImpl(final State initial) {
         this.start = this.lineNum = 1;
-        this.offset = 0;
+        this.offset = 1;
         this.current = this.initial = initial;
         pendingToken = new Token(start, lineNum);
         acceptedTokens = new ArrayList<>();
@@ -50,9 +51,9 @@ public final class FSMImpl implements FSM {
         return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
     }
 
-    public FSM transition(final Character c) {
+    public FSM transition(final Character c) throws InvalidTokenException {
         if (Character.isWhitespace(c)) {
-            if (this.isAborting) throw new IllegalStateException();
+            if (this.isAborting) throw new InvalidTokenException("NOPE");
 
             if (!current.equals(initial)) {
                 if (isValidToken(current.getTokenType())) {
@@ -66,7 +67,13 @@ public final class FSMImpl implements FSM {
         }
         pendingToken.addChar(c);
         offset++;
-        this.current = this.current.transition(c);
+
+        try {
+            this.current = this.current.transition(c);
+        } catch (IllegalArgumentException e) {
+            if (!isAborting) this.isAborting = true;
+        }
+
         return this;
     }
 
