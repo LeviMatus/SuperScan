@@ -98,30 +98,9 @@ public class ScannerController {
     }
 
     private void handleValidTokens() {
-        for (Token token : fsm.getTokens()) {
+        for (Token token : fsm.getAcceptedTokens()) {
             System.out.println(token.toString());
         }
-    }
-
-    private boolean handleInvalidToken() {
-        Token token = dfa.getCurrToken();
-        if (dfa.currentTokenIndex().equals(dfa.getStart())) {
-            Character singleCharToken = token.getVal().charAt(0);
-            token.setVal(singleCharToken.toString());
-        }
-        /**
-         * treat single-len errors as single-char tokens. Otherwise, it's multi-char.
-         */
-        if (dfa.getCurrToken().getVal().length() > 1 && !dfa.isAborting()) {
-            dfa.abort();
-            return false;
-        }
-        System.out.println(token);
-        return true;
-    }
-
-    private boolean tokenIsAccepted(Tokens token) {
-        return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
     }
 
     public void analyzeFile() {
@@ -130,12 +109,12 @@ public class ScannerController {
             try {
                 fsm.transition(c);
             } catch (InvalidTokenException e) {
-                System.out.println("Well, shit!");
+                System.out.println(e.getMessage());
+                System.exit(-1);
             }
         }
 
-        if (!fsm.isSatisfied()) handleInvalidToken();
-        else handleValidTokens();
+        handleValidTokens();
     }
 
 }

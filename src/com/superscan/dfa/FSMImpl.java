@@ -24,6 +24,7 @@ public final class FSMImpl implements FSM {
         acceptedTokens = new ArrayList<>();
     }
 
+    private int currentTotalOffset() { return this.start + this.offset; }
     public void incrementOffset() { this.offset++; }
     public void incrementLineNum() { this.lineNum++; }
 
@@ -51,9 +52,13 @@ public final class FSMImpl implements FSM {
         return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
     }
 
+    private InvalidTokenException generateError() {
+        return new InvalidTokenException(pendingToken.toString());
+    }
+
     public FSM transition(final Character c) throws InvalidTokenException {
         if (Character.isWhitespace(c)) {
-            if (this.isAborting) throw new InvalidTokenException("NOPE");
+            if (this.isAborting) throw generateError();
 
             if (!current.equals(initial)) {
                 if (isValidToken(current.getTokenType())) {
@@ -72,12 +77,13 @@ public final class FSMImpl implements FSM {
             this.current = this.current.transition(c);
         } catch (IllegalArgumentException e) {
             if (!isAborting) this.isAborting = true;
+            if (pendingToken.getVal().length() == 1) throw generateError();
         }
 
         return this;
     }
 
-    public List<Token> getTokens() {
+    public List<Token> getAcceptedTokens() {
         return this.acceptedTokens;
     }
 
