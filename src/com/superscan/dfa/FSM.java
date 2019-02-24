@@ -6,6 +6,4 @@ public interface FSM {
 
     FSM transition(final Character c) throws InvalidTokenException;
 
-    boolean isSatisfied();
-
 }

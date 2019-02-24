@@ -20,13 +20,9 @@ public final class FSMImpl implements FSM {
         this.start = this.lineNum = 1;
         this.offset = 1;
         this.current = this.initial = initial;
-        pendingToken = new Token(start, lineNum);
-        acceptedTokens = new ArrayList<>();
+        this.pendingToken = new Token(this.start, this.lineNum);
+        this.acceptedTokens = new ArrayList<>();
     }
-
-    private int currentTotalOffset() { return this.start + this.offset; }
-    public void incrementOffset() { this.offset++; }
-    public void incrementLineNum() { this.lineNum++; }
 
     public void reset() {
         this.current = this.initial;
@@ -36,16 +32,16 @@ public final class FSMImpl implements FSM {
 
     private void handleWhitespace(Character c) {
         if (c.equals('\n')) {
-            lineNum++;
-            start = 1;
-            offset = 1;
+            this.lineNum++;
+            this.start = 1;
+            this.offset = 1;
         } else reset();
     }
 
     public void delimitToken() {
-        pendingToken.setType(current.getTokenType());
-        acceptedTokens.add(pendingToken);
-        current = initial;
+        this.pendingToken.setType(this.current.getTokenType());
+        this.acceptedTokens.add(this.pendingToken);
+        this.current = this.initial;
     }
 
     private boolean isValidToken(Tokens token) {
@@ -53,31 +49,31 @@ public final class FSMImpl implements FSM {
     }
 
     private InvalidTokenException generateError() {
-        return new InvalidTokenException(pendingToken.toString());
+        return new InvalidTokenException(this.pendingToken.toString());
     }
 
     public FSM transition(final Character c) throws InvalidTokenException {
         if (Character.isWhitespace(c)) {
             if (this.isAborting) throw generateError();
 
-            if (!current.equals(initial)) {
-                if (isValidToken(current.getTokenType())) {
+            if (!this.current.equals(this.initial)) {
+                if (isValidToken(this.current.getTokenType())) {
                     delimitToken();
                     handleWhitespace(c);
-                    pendingToken = new Token(lineNum, start);
+                    this.pendingToken = new Token(this.lineNum, this.start);
                     return this;
                 }
                 return this;
             }
         }
-        pendingToken.addChar(c);
-        offset++;
+        this.pendingToken.addChar(c);
+        this.offset++;
 
         try {
             this.current = this.current.transition(c);
         } catch (IllegalArgumentException e) {
-            if (!isAborting) this.isAborting = true;
-            if (pendingToken.getVal().length() == 1) throw generateError();
+            if (!this.isAborting) this.isAborting = true;
+            if (this.pendingToken.getVal().length() == 1) throw generateError();
         }
 
         return this;
@@ -85,10 +81,6 @@ public final class FSMImpl implements FSM {
 
     public List<Token> getAcceptedTokens() {
         return this.acceptedTokens;
-    }
-
-    public boolean isSatisfied() {
-        return this.pendingToken.getVal().length() == 0;
     }
 
 }
