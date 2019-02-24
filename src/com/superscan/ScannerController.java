@@ -88,6 +88,7 @@ public class ScannerController {
             S10 = addUpperAndLowercase(S10, S10, i);
         }
 
+        fsm = new FSMImpl(S1);
     }
 
     private State addUpperAndLowercase(State state, State next, int i) {
@@ -126,9 +127,7 @@ public class ScannerController {
         Tokens tokenType = Tokens.INDETERMINATE;
 
         for (Character c : chars) {
-            tokenType = dfa.transitionFunction(c);
-            if (tokenType.equals(Tokens.INVALID))
-                if (handleInvalidToken()) return;
+            fsm.transition(c);
         }
 
         if (!tokenIsAccepted(tokenType)) handleInvalidToken();
