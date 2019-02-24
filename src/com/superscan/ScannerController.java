@@ -1,11 +1,10 @@
 package com.superscan;
 
-import com.superscan.dfa.FSMImpl;
+import com.superscan.dfa.DFAImpl;
 import com.superscan.enums.Tokens;
-import com.superscan.scanners.DFA;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
-import com.superscan.transitions.InvalidTokenException;
+import com.superscan.dfa.InvalidTokenException;
 import com.superscan.transitions.TransitionImpl;
 
 import java.io.BufferedReader;
@@ -17,8 +16,7 @@ import java.util.Arrays;
 
 public class ScannerController {
 
-    private DFA dfa = new DFA();
-    private FSMImpl fsm;
+    private DFAImpl fsm;
     private ArrayList<Character> chars = new ArrayList<>();
 
     public ScannerController(String fName) {
@@ -33,7 +31,7 @@ public class ScannerController {
             System.exit(-1);
         }
 
-        // States to belong to FSM
+        // States to belong to DFA
         State S1 = new StateImpl();
         State S2 = new StateImpl();
         State S3 = new StateImpl();
@@ -89,7 +87,7 @@ public class ScannerController {
             S10 = addUpperAndLowercase(S10, S10, i);
         }
 
-        fsm = new FSMImpl(S1);
+        fsm = new DFAImpl(S1);
     }
 
     private State addUpperAndLowercase(State state, State next, int i) {

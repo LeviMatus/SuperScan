@@ -18,20 +18,12 @@ public class Token {
         return val;
     }
 
-    public void setVal(String val) {
-        this.val = val;
-    }
-
     public void addChar(Character c) {
         val += c;
     }
 
     public void setType(Tokens type) {
         this.type = type;
-    }
-
-    public Tokens getType() {
-        return type;
     }
 
     @Override

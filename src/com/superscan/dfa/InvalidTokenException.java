@@ -1,4 +1,4 @@
-package com.superscan.transitions;
+package com.superscan.dfa;
 
 public class InvalidTokenException extends Exception {
     public InvalidTokenException(String errorMessage) {
