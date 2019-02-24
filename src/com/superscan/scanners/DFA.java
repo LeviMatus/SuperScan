@@ -6,6 +6,8 @@ import com.superscan.enums.Tokens;
 
 import java.util.ArrayList;
 
+import static com.superscan.utils.CharUtils.charInRange;
+
 public class DFA {
 
     private States currentState;
@@ -69,15 +71,6 @@ public class DFA {
         acceptedTokens.add(currToken);
         currentState = States.STATE_1;
     }
-
-    public boolean isWhitespace(Character curr) {
-        return curr.equals(' ') || curr.equals('\n') || curr.equals('\t');
-    }
-
-    private boolean charInRange(Character c, int lower, int upper) {
-        return Character.getNumericValue(c) >= lower && Character.getNumericValue(c) <= upper;
-    }
-
     /**
      * newlines initialize a new line, other whitespace chars setup rows and columns for new token.
      * @param c character to evaluate.
@@ -102,7 +95,7 @@ public class DFA {
      */
     public Tokens transitionFunction(Character curr) {
 
-        if (isWhitespace(curr)) {
+        if (Character.isWhitespace(curr)) {
             if (aborting) return Tokens.INVALID;
 
             if (!currentState.equals(States.STATE_1)) {
