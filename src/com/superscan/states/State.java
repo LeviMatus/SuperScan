@@ -1,5 +1,7 @@
 package com.superscan.states;
 
+import com.superscan.transitions.Transition;
+
 public interface State {
 
     /**
