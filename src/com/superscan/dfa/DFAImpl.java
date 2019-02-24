@@ -23,7 +23,7 @@ public final class DFAImpl implements DFA {
         this.acceptedTokens = new ArrayList<>();
     }
 
-    public void reset() {
+    private void reset() {
         this.current = this.initial;
         this.start += this.offset;
         this.offset = 1;
@@ -37,7 +37,7 @@ public final class DFAImpl implements DFA {
         } else reset();
     }
 
-    public void delimitToken() {
+    private void delimitToken() {
         this.pendingToken.setType(this.current.getTokenType());
         this.acceptedTokens.add(this.pendingToken);
         this.current = this.initial;
