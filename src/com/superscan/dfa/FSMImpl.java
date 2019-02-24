@@ -1,10 +1,10 @@
-package com.superscan;
+package com.superscan.dfa;
 
-import com.superscan.enums.States;
+import com.superscan.Token;
 import com.superscan.states.State;
-import com.superscan.states.StateImpl;
 import com.superscan.enums.Tokens;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class FSMImpl implements FSM {
@@ -20,6 +20,7 @@ public final class FSMImpl implements FSM {
         this.offset = 0;
         this.current = this.initial = initial;
         pendingToken = new Token(start, lineNum);
+        acceptedTokens = new ArrayList<>();
     }
 
     public void incrementOffset() { this.offset++; }
@@ -65,12 +66,16 @@ public final class FSMImpl implements FSM {
         }
         pendingToken.addChar(c);
         offset++;
-        this.current.transition(c);
+        this.current = this.current.transition(c);
         return this;
     }
 
-    public boolean canStop() {
-        return this.current.isFinal();
+    public List<Token> getTokens() {
+        return this.acceptedTokens;
+    }
+
+    public boolean isSatisfied() {
+        return this.pendingToken.getVal().length() == 0;
     }
 
 }
