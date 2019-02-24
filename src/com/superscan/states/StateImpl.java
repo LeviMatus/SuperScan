@@ -27,6 +27,7 @@ public class StateImpl implements State {
     }
 
     public boolean isFinal() {return this.isFinal;}
+    public Tokens getTokenType() { return this.tokenType; }
 
     public State addTransition(Transition transition) {
         this.transitions.add(transition);
