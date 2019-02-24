@@ -1,5 +1,9 @@
 package com.superscan.enums;
 
+@Deprecated
+/**
+ * Deprecated. Declare states using State-Design Pattern as done in the Scanner.
+ */
 public enum States {
     STATE_1(Tokens.INDETERMINATE),
     STATE_2(Tokens.INDETERMINATE),
