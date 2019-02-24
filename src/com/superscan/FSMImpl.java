@@ -1,6 +1,7 @@
 package com.superscan;
 
 import com.superscan.enums.States;
+import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.enums.Tokens;
 
@@ -8,13 +9,13 @@ import java.util.List;
 
 public final class FSMImpl implements FSM {
 
-    private StateImpl current, initial;
+    private State current, initial;
     private Integer start, lineNum, offset;
     private Token pendingToken;
     private List<Token> acceptedTokens;
     private boolean isAborting;
 
-    public FSMImpl(final StateImpl initial) {
+    public FSMImpl(final State initial) {
         this.start = this.lineNum = 1;
         this.offset = 0;
         this.current = this.initial = initial;
