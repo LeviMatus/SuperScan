@@ -1,5 +1,24 @@
+/**
+ * References
+ *
+ * https://www.baeldung.com/java-finite-automata
+ * https://github.com/eugenp/tutorials/tree/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata
+ *
+ * Baeldung features a tutorial on how to setup a design pattern for validating input with a
+ * Finite State Machine. The source code from the tutorial is also referenced above.
+ *
+ * We decided to use this design pattern because it seemed more portable than using a unwieldy switch statement. FSM's
+ * use are not limited to compiler frontend design, and finding a more modular way of working with the components
+ * involved with them may be of good experience should we find an application for them in the future.
+ *
+ * Our controller, states, DFA, and transitions are all based on the code from above. However, the Baeldung
+ * implementation is somewhat limited. It is for a general state-change pattern. It does not broach the topic of
+ * tokenizing or labeling tokens.
+ */
+
 package com.superscan;
 
+import com.superscan.dfa.DFA;
 import com.superscan.dfa.DFAImpl;
 import com.superscan.enums.Tokens;
 import com.superscan.states.State;
@@ -16,7 +35,7 @@ import java.util.Arrays;
 
 public class ScannerController {
 
-    private DFAImpl fsm;
+    private DFA fsm;
     private ArrayList<Character> chars = new ArrayList<>();
 
     public ScannerController(String fName) {
@@ -105,7 +124,7 @@ public class ScannerController {
 
         for (Character c : chars) {
             try {
-                fsm.transition(c);
+                fsm = fsm.transition(c);
             } catch (InvalidTokenException e) {
                 System.out.println(e.getMessage());
                 System.exit(-1);
