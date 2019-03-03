@@ -1,5 +1,7 @@
 package com.superscan.states;
 
+import com.superscan.dfa.DFAImpl;
+import com.superscan.dfa.InvalidTokenException;
 import com.superscan.enums.Tokens;
 import com.superscan.transitions.Transition;
 
@@ -26,5 +28,5 @@ public interface State {
      * @return Accepted State.
      * @throws IllegalStateException if c is invalid.
      */
-    State transition(final Character c);
+    State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException;
 }
