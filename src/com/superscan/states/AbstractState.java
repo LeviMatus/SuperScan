@@ -54,24 +54,28 @@ public abstract class AbstractState implements State {
      * @return the new State
      * @throws InvalidTokenException on a non-accepted token.
      */
+    @Override
     public State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException {
         State result = transitions
                 .stream()
                 .filter(transition -> transition.isValid(c))
                 .map(Transition::next)
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("FAILURE"));
+                .orElseGet(() -> attemptFallback(dfa));
 
         if (result.equals(initialState)) {
             if (dfa.isAborting()) throw dfa.generateError();
-            if (isValidToken(this.tokenType)) {
-                dfa.handleWhitespace(c);
-            } else dfa.reset();
+            if (isValidToken(this.tokenType)) dfa.handleWhitespace(c);
+            else throw dfa.generateError();
             return result;
         }
 
         dfa.addCharToToken(c);
         return result;
+    }
+
+    public State attemptFallback(final DFAImpl dfa) {
+        throw new IllegalArgumentException("FAILURE");
     }
 
 }
