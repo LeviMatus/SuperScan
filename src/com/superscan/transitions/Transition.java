@@ -4,9 +4,6 @@ import com.superscan.states.State;
 
 public interface Transition {
 
-
-    Character getRule();
-
     /**
      * Is this a valid transition, given c?
      * @param c Character.
