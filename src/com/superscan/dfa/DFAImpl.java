@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class DFAImpl implements DFA {
 
-    private State current, initial;
+    private State current;
     private Integer start, lineNum, offset;
     private Token pendingToken;
     private List<Token> acceptedTokens;
@@ -18,7 +18,7 @@ public final class DFAImpl implements DFA {
     public DFAImpl(final State initial) {
         this.start = this.lineNum = 1;
         this.offset = 1;
-        this.current = this.initial = initial;
+        this.current = initial;
         this.pendingToken = new Token(this.start, this.lineNum);
         this.acceptedTokens = new ArrayList<>();
     }
