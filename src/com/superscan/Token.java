@@ -2,6 +2,10 @@ package com.superscan;
 
 import com.superscan.enums.Tokens;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 public class Token {
 
     private String val;
@@ -33,4 +37,23 @@ public class Token {
                     row, col, val);
         return String.format("%s %d:%d", type.toString(), row, col);
     }
+
+    public Optional<Map<String, Integer>> handleMultilineStrings() {
+        Long number = this.val.chars()
+                .mapToObj(e -> (char) e)
+                .filter(e -> e.equals('\n'))
+                .count();
+
+        if (number > 0) {
+            int i = this.val.lastIndexOf('\n');
+            int len = this.val.substring(i).length();
+            return Optional.of(
+                    new HashMap<String, Integer>(){{
+                        put("NLs", number.intValue());
+                        put("OFFSET", len);
+                    }});
+        }
+        return Optional.empty();
+    }
+
 }

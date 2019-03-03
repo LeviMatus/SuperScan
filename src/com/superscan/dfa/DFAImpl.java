@@ -5,6 +5,8 @@ import com.superscan.states.State;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public final class DFAImpl implements DFA {
 
@@ -42,9 +44,10 @@ public final class DFAImpl implements DFA {
      * Position line col number and offset from the col to the
      * end of the previously handled token.
      */
-    private void reset() {
+    public void reset() {
         this.start += this.offset;
         this.offset = 1;
+        this.pendingToken = new Token(this.lineNum, this.start);
     }
 
     /**
@@ -54,11 +57,18 @@ public final class DFAImpl implements DFA {
      */
     public void handleWhitespace(Character c) {
         delimitToken();
+        Optional<Map<String, Integer>> newlineOffset = this.pendingToken.handleMultilineStrings();
+
         if (c.equals('\n')) {
             this.lineNum++;
             this.start = 1;
             this.offset = 1;
-        } else reset();
+        } else if (newlineOffset.isPresent()) {
+            this.lineNum = this.lineNum + newlineOffset.get().get("NLs");
+            this.start = newlineOffset.get().get("OFFSET") + 1;
+            this.offset = 1;
+        } else
+            reset();
         this.pendingToken = new Token(this.lineNum, this.start);
     }
 
