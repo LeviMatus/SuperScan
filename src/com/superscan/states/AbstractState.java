@@ -64,10 +64,7 @@ public abstract class AbstractState implements State {
                 .orElseGet(() -> attemptFallback(dfa));
 
         if (result.equals(initialState)) {
-            if (dfa.isAborting()) throw dfa.generateError();
-            if (isValidToken(this.tokenType)) dfa.handleWhitespace(c);
-            else throw dfa.generateError();
-            return result;
+            return handleDelimitation(c, result, dfa);
         }
 
         dfa.addCharToToken(c);
@@ -76,6 +73,16 @@ public abstract class AbstractState implements State {
 
     public State attemptFallback(final DFAImpl dfa) {
         throw new IllegalArgumentException("FAILURE");
+    }
+
+    public State handleDelimitation(final Character c, final State state, final DFAImpl dfa) throws InvalidTokenException {
+        if (dfa.isAborting()) throw dfa.generateError();
+        if (isValidToken(this.tokenType)) {
+            dfa.delimitToken();
+            dfa.handleWhitespace(c);
+        }
+        else throw dfa.generateError();
+        return state;
     }
 
 }

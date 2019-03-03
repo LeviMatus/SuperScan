@@ -57,7 +57,6 @@ public final class DFAImpl implements DFA {
      * @param c Character
      */
     public void handleWhitespace(Character c) {
-        delimitToken();
         Optional<Map<String, Integer>> newlineOffset = this.pendingToken.handleMultilineStrings();
 
         if (c.equals('\n')) {
