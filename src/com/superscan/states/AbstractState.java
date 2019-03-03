@@ -44,8 +44,7 @@ public abstract class AbstractState implements State {
 
         if (result.equals(initialState)) {
             if (dfa.isAborting()) throw dfa.generateError();
-            if (dfa.isValidToken(this.tokenType)) {
-                dfa.delimitToken();
+            if (isValidToken(this.tokenType)) {
                 dfa.handleWhitespace(c);
             }
             return result;

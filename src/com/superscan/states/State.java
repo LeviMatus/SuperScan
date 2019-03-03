@@ -29,4 +29,8 @@ public interface State {
      * @throws IllegalStateException if c is invalid.
      */
     State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException;
+
+    default boolean isValidToken(Tokens token) {
+        return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
+    }
 }
