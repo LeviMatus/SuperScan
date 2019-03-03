@@ -21,6 +21,7 @@ package com.superscan;
 import com.superscan.dfa.DFA;
 import com.superscan.dfa.DFAImpl;
 import com.superscan.enums.Tokens;
+import com.superscan.states.InitialStateImpl;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.dfa.InvalidTokenException;
@@ -51,7 +52,7 @@ public class ScannerController {
         }
 
         // States to belong to DFA
-        State S1 = new StateImpl();
+        State S1 = new InitialStateImpl();
         State S2 = new StateImpl();
         State S3 = new StateImpl();
         State S4 = new StateImpl();
