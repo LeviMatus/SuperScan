@@ -26,6 +26,7 @@ import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.dfa.InvalidTokenException;
 import com.superscan.transitions.TransitionImpl;
+import com.superscan.utils.CharUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -65,12 +66,11 @@ public class ScannerController {
         State S11 = new StateImpl(true, Tokens.NUMBER);
         State S12 = new StateImpl(true, Tokens.NUMBER);
         State S13 = new StateImpl();
-        State S14 = new StateImpl(false);
-        State S15 = new StateImpl(true, Tokens.STRING);
-        State S16 = new StateImpl(false);
-        State S17 = new StateImpl(false);
-        State S18 = new StateImpl(false);
-        State S19 = new StateImpl(false);
+        State S14 = new StateImpl(false, "S14");
+        State S15 = new StateImpl(true, Tokens.STRING, "S15");
+        State S16 = new StateImpl(false, S14, "S16");
+        State S18 = new StateImpl(false, S14, "S18");
+        State S19 = new StateImpl(false, S14, "S19");
 
         // Initialize State Transitions
         S1 = S1.addTransition(new TransitionImpl('0', S11));
@@ -83,9 +83,11 @@ public class ScannerController {
         S11 = S11.addTransition(new TransitionImpl('b', S2));
         S11 = S11.addTransition(new TransitionImpl('x', S4));
         S11 = S11.addTransition(new TransitionImpl('.', S13));
+        S14 = S14.addTransition(new TransitionImpl(S14, '"', '\\'));
         S14 = S14.addTransition(new TransitionImpl('"', S15));
         S14 = S14.addTransition(new TransitionImpl('\\', S16));
-        S14 = S14.addTransition(new TransitionImpl(S14, '"', '\\'));
+        S16 = S16.addTransition(new TransitionImpl('n', S14));
+        S16 = S16.addTransition(new TransitionImpl('t', S14));
 
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
@@ -95,6 +97,11 @@ public class ScannerController {
                     S8 = S8.addTransition(new TransitionImpl(digit, S8));
                 }
                 if (i > 0) S1 = S1.addTransition(new TransitionImpl(digit, S12));
+                if (i <= 3) S16 = S16.addTransition(new TransitionImpl(digit, S18));
+                if (CharUtils.charInRange(digit, 1, 7)) {
+                    S18 = S18.addTransition(new TransitionImpl(digit, S19));
+                    S19 = S19.addTransition(new TransitionImpl(digit, S14));
+                }
                 S3 = S3.addTransition(new TransitionImpl(digit, S7));
                 S4 = S4.addTransition(new TransitionImpl(digit, S10));
                 S5 = S5.addTransition(new TransitionImpl(digit, S5));
