@@ -72,11 +72,14 @@ public class ScannerController {
         State S18 = new StateImpl(false, S14, "S18");
         State S19 = new StateImpl(false, S14, "S19");
 
+        State S42 = new StateImpl(false, Tokens.INDETERMINATE, false, "S42");
+
         // Initialize State Transitions
         S1 = S1.addTransition(new TransitionImpl('0', S11));
         S1 = S1.addTransition(new TransitionImpl('-', S9));
         S1 = S1.addTransition(new TransitionImpl('+', S9));
         S1 = S1.addTransition(new TransitionImpl('"', S14));
+        S1 = S1.addTransition(new TransitionImpl(';', S42));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
         S3 = S3.addTransition(new TransitionImpl('+', S6));
         S9 = S9.addTransition(new TransitionImpl('.', S13));
@@ -88,6 +91,9 @@ public class ScannerController {
         S14 = S14.addTransition(new TransitionImpl('\\', S16));
         S16 = S16.addTransition(new TransitionImpl('n', S14));
         S16 = S16.addTransition(new TransitionImpl('t', S14));
+
+        S42 = S42.addTransition(new TransitionImpl('\n', S1));
+        S42 = S42.addTransition(new TransitionImpl(S42, '\n'));
 
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
