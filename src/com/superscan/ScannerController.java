@@ -21,6 +21,7 @@ package com.superscan;
 import com.superscan.dfa.DFA;
 import com.superscan.dfa.DFAImpl;
 import com.superscan.enums.Tokens;
+import com.superscan.states.CommentStateImpl;
 import com.superscan.states.InitialStateImpl;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
@@ -72,7 +73,7 @@ public class ScannerController {
         State S18 = new StateImpl(false, S14, "S18");
         State S19 = new StateImpl(false, S14, "S19");
 
-        State S42 = new StateImpl(false, Tokens.INDETERMINATE, false, "S42");
+        State S42 = new CommentStateImpl();
 
         // Initialize State Transitions
         S1 = S1.addTransition(new TransitionImpl('0', S11));
