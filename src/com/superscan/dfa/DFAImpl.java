@@ -40,6 +40,8 @@ public final class DFAImpl implements DFA {
      */
     public boolean isAborting() {return isAborting;}
 
+    public void abort() {isAborting = true;}
+
     /**
      * Position line col number and offset from the col to the
      * end of the previously handled token.
@@ -47,7 +49,6 @@ public final class DFAImpl implements DFA {
     public void reset() {
         this.start += this.offset;
         this.offset = 1;
-        this.pendingToken = new Token(this.lineNum, this.start);
     }
 
     /**
