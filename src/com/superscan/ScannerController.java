@@ -65,17 +65,27 @@ public class ScannerController {
         State S11 = new StateImpl(true, Tokens.NUMBER);
         State S12 = new StateImpl(true, Tokens.NUMBER);
         State S13 = new StateImpl();
+        State S14 = new StateImpl(false);
+        State S15 = new StateImpl(true, Tokens.STRING);
+        State S16 = new StateImpl(false);
+        State S17 = new StateImpl(false);
+        State S18 = new StateImpl(false);
+        State S19 = new StateImpl(false);
 
         // Initialize State Transitions
         S1 = S1.addTransition(new TransitionImpl('0', S11));
         S1 = S1.addTransition(new TransitionImpl('-', S9));
         S1 = S1.addTransition(new TransitionImpl('+', S9));
+        S1 = S1.addTransition(new TransitionImpl('"', S14));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
         S3 = S3.addTransition(new TransitionImpl('+', S6));
         S9 = S9.addTransition(new TransitionImpl('.', S13));
         S11 = S11.addTransition(new TransitionImpl('b', S2));
         S11 = S11.addTransition(new TransitionImpl('x', S4));
         S11 = S11.addTransition(new TransitionImpl('.', S13));
+        S14 = S14.addTransition(new TransitionImpl('"', S15));
+        S14 = S14.addTransition(new TransitionImpl('\\', S16));
+        S14 = S14.addTransition(new TransitionImpl(S14, '"', '\\'));
 
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
