@@ -1,2 +1,2 @@
-"aa" "a458754" "adfas dfffd"
-"hi"
+"next " 0b11001 5e15 "next
+line" 0xaFFa05
