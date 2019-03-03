@@ -24,62 +24,54 @@ public final class DFAImpl implements DFA {
     }
 
     private void reset() {
-        this.current = this.initial;
         this.start += this.offset;
         this.offset = 1;
     }
 
-    private void handleWhitespace(Character c) {
+    public void handleWhitespace(Character c) {
         if (c.equals('\n')) {
             this.lineNum++;
             this.start = 1;
             this.offset = 1;
         } else reset();
+        this.pendingToken = new Token(this.lineNum, this.start);
     }
 
-    private void delimitToken() {
+    public void delimitToken() {
         this.pendingToken.setType(this.current.getTokenType());
         this.acceptedTokens.add(this.pendingToken);
-        this.current = this.initial;
     }
 
-    private boolean isValidToken(Tokens token) {
+    public boolean isValidToken(Tokens token) {
         return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
     }
 
-    private InvalidTokenException generateError() {
+    public InvalidTokenException generateError() {
         return new InvalidTokenException(this.pendingToken.toString());
     }
 
-    public DFA transition(final Character c) throws InvalidTokenException {
-        if (Character.isWhitespace(c)) {
-            if (this.isAborting) throw generateError();
-
-            if (!this.current.equals(this.initial)) {
-                if (isValidToken(this.current.getTokenType())) {
-                    delimitToken();
-                    handleWhitespace(c);
-                    this.pendingToken = new Token(this.lineNum, this.start);
-                    return this;
-                }
-                return this;
-            }
-        }
+    public void addCharToToken(Character c) {
         this.pendingToken.addChar(c);
         this.offset++;
+    }
 
+    public DFA transition(final Character c) throws InvalidTokenException {
         try {
-            this.current = this.current.transition(c);
+            this.current = this.current.transition(c, this);
         } catch (IllegalArgumentException e) {
+            addCharToToken(c);
             if (!this.isAborting) this.isAborting = true;
             if (this.pendingToken.getVal().length() == 1) throw generateError();
         }
-
         return this;
     }
 
     public List<Token> getAcceptedTokens() {
         return this.acceptedTokens;
     }
+    public void abort() {isAborting=true;}
 
+    public boolean isAborting() {
+        return isAborting;
+    }
 }
