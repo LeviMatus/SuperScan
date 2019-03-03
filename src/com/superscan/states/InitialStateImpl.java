@@ -13,6 +13,9 @@ public class InitialStateImpl extends AbstractState {
         this(false, Tokens.INDETERMINATE);
     }
 
+    /**
+     * the initial state needs to transition back to itself on whitespaces
+     */
     public InitialStateImpl(final boolean isFinal, final Tokens tokenType) {
         super(isFinal, tokenType);
         addTransition(new TransitionImpl(' ', this));

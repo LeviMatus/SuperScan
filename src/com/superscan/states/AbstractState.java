@@ -15,25 +15,45 @@ public abstract class AbstractState implements State {
     private Tokens tokenType;
     private static State initialState;
 
-    public AbstractState(final boolean isFinal, final Tokens tokenType) {
+    AbstractState(final boolean isFinal, final Tokens tokenType) {
         this.transitions = new ArrayList<>();
         this.isFinal = isFinal;
         this.tokenType = tokenType;
     }
 
-    public static State getInitialState() {
+    public boolean isFinal() { return this.isFinal; }
+    public Tokens getTokenType() { return this.tokenType; }
+
+    /**
+     * @return State the initial state of the DFA
+     */
+    static State getInitialState() {
         return initialState;
     }
 
-    public static void setInitialState(State initialState) {
+    static void setInitialState(State initialState) {
         AbstractState.initialState = initialState;
     }
 
+    /**
+     * Add a transition to the state.
+     * @param transition Transition object representing the transition from State A to State B
+     * @return this State
+     */
     public State addTransition(Transition transition) {
         this.transitions.add(transition);
         return this;
     }
 
+    /**
+     * Transition to a new state after reading a character. If we reach the initial state, then
+     * delimit a token.
+     *
+     * @param c Character which to read next.
+     * @param dfa DFA to update on transition
+     * @return the new State
+     * @throws InvalidTokenException on a non-accepted token.
+     */
     public State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException {
         State result = transitions
                 .stream()
@@ -54,10 +74,4 @@ public abstract class AbstractState implements State {
         return result;
     }
 
-    public boolean isFinal() {return this.isFinal;}
-    public Tokens getTokenType() { return this.tokenType; }
-
-    public List<Transition> getTransitions() {
-        return transitions;
-    }
 }
