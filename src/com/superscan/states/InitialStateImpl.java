@@ -1,5 +1,6 @@
 package com.superscan.states;
 
+import com.superscan.dfa.DFAImpl;
 import com.superscan.enums.Tokens;
 import com.superscan.transitions.TransitionImpl;
 
@@ -22,6 +23,12 @@ public class InitialStateImpl extends AbstractState {
         addTransition(new TransitionImpl('\t', this));
         addTransition(new TransitionImpl('\n', this));
         setInitialState(this);
+    }
+
+    @Override
+    public State handleDelimitation(final Character c, final State state, final DFAImpl dfa) {
+        dfa.handleWhitespace(c);
+        return state;
     }
 
 }
