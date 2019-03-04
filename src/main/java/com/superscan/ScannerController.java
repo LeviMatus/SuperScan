@@ -76,6 +76,7 @@ public class ScannerController {
         State S18 = new StateImpl(false, S14, "S18");
         State S19 = new StateImpl(false, S14, "S19");
         State S20 = new StateImpl();
+        State S21 = new StateImpl(true, Tokens.BOOLEAN, "S21");
         State S22 = new StateImpl();
         State S23 = new StateImpl(true, Tokens.CHAR, "S23");
         State S24 = new StateImpl(true, Tokens.CHAR, "S24");
@@ -114,6 +115,8 @@ public class ScannerController {
         S14 = S14.addTransition(new TransitionImpl('\\', S16));
         S16 = S16.addTransition(new TransitionImpl('n', S14));
         S16 = S16.addTransition(new TransitionImpl('t', S14));
+        S20.addTransition(new TransitionImpl('t', S21));
+        S20.addTransition(new TransitionImpl('f', S21));
         S20.addTransition(new TransitionImpl('\\', S22));
         S22.addTransition(new TransitionImpl(S23, 't', 's', 'n', '0', '1', '2', '3'));
         S22.addTransition(new TransitionImpl('t', S26));
