@@ -92,6 +92,7 @@ public class ScannerController {
         State S35 = new StateImpl();
         State S36 = new StateImpl();
         State S42 = new CommentStateImpl();
+        State S76 = new StateImpl(true, Tokens.IDENTIFIER, "S76");
 
         // Initialize State Transitions
         S1 = S1.addTransition(new TransitionImpl('0', S11));
@@ -161,6 +162,7 @@ public class ScannerController {
                 S11 = S11.addTransition(new TransitionImpl(digit, S12));
                 S12 = S12.addTransition(new TransitionImpl(digit, S12));
                 S13 = S13.addTransition(new TransitionImpl(digit, S5));
+                S76.addTransition(new TransitionImpl(digit, S76));
             }
 
             if ('e' == ('a' + i)) {
@@ -169,8 +171,10 @@ public class ScannerController {
                 S5 = addUpperAndLowercase(S5, S3, i);
             }
 
+            addUpperAndLowercase(S1, S76, i);
             S4 = addUpperAndLowercase(S4, S10, i);
             S10 = addUpperAndLowercase(S10, S10, i);
+            addUpperAndLowercase(S76, S76, i);
         }
 
         fsm = new DFAImpl(S1);
