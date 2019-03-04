@@ -1,11 +1,10 @@
-package test.java.com.superscan;
+package com.superscan;
 
-import main.com.superscan.ScannerController;
-import main.com.superscan.dfa.DFA;
-import main.com.superscan.dfa.DFAImpl;
-import main.com.superscan.states.InitialStateImpl;
-import main.com.superscan.states.State;
-import main.com.superscan.transitions.TransitionImpl;
+import com.superscan.dfa.DFA;
+import com.superscan.dfa.DFAImpl;
+import com.superscan.states.InitialStateImpl;
+import com.superscan.states.State;
+import com.superscan.transitions.TransitionImpl;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;

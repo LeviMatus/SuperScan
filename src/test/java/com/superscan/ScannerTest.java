@@ -1,9 +1,9 @@
-package test.java.com.superscan;
+package com.superscan;
 
-import main.com.superscan.enums.Tokens;
-import main.com.superscan.states.State;
-import main.com.superscan.states.StateImpl;
-import main.com.superscan.transitions.TransitionImpl;
+import com.superscan.enums.Tokens;
+import com.superscan.states.State;
+import com.superscan.states.StateImpl;
+import com.superscan.transitions.TransitionImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

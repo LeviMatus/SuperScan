@@ -1,4 +1,4 @@
-package main.com.superscan.enums;
+package com.superscan.enums;
 
 public enum Tokens {
     INVALID("INVALID"),

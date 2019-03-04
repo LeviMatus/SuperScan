@@ -16,18 +16,18 @@
  * tokenizing or labeling tokens.
  */
 
-package main.com.superscan;
+package com.superscan;
 
-import main.com.superscan.dfa.DFA;
-import main.com.superscan.dfa.DFAImpl;
-import main.com.superscan.enums.Tokens;
-import main.com.superscan.states.CommentStateImpl;
-import main.com.superscan.states.InitialStateImpl;
-import main.com.superscan.states.State;
-import main.com.superscan.states.StateImpl;
-import main.com.superscan.dfa.InvalidTokenException;
-import main.com.superscan.transitions.TransitionImpl;
-import main.com.superscan.utils.CharUtils;
+import com.superscan.dfa.DFA;
+import com.superscan.dfa.DFAImpl;
+import com.superscan.enums.Tokens;
+import com.superscan.states.CommentStateImpl;
+import com.superscan.states.InitialStateImpl;
+import com.superscan.states.State;
+import com.superscan.states.StateImpl;
+import com.superscan.dfa.InvalidTokenException;
+import com.superscan.transitions.TransitionImpl;
+import com.superscan.utils.CharUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

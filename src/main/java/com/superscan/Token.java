@@ -1,6 +1,6 @@
-package main.com.superscan;
+package com.superscan;
 
-import main.com.superscan.enums.Tokens;
+import com.superscan.enums.Tokens;
 
 import java.util.HashMap;
 import java.util.Map;

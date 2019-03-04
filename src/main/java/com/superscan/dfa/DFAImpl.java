@@ -1,7 +1,7 @@
-package main.com.superscan.dfa;
+package com.superscan.dfa;
 
-import main.com.superscan.Token;
-import main.com.superscan.states.State;
+import com.superscan.Token;
+import com.superscan.states.State;
 
 import java.util.ArrayList;
 import java.util.List;
