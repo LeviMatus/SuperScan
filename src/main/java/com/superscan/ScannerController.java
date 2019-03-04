@@ -33,6 +33,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,7 +45,7 @@ public class ScannerController {
     public ScannerController(DFA dfa) {this.fsm = dfa;}
 
     public ScannerController(String fName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(Main.class.getResource(fName).getFile())))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("./".concat(fName))))) {
             while (br.ready()) {
                 Character[] lineChars = br.readLine().chars().mapToObj(c -> (char)c).toArray(Character[]::new);
                 chars.addAll(Arrays.asList(lineChars));
@@ -74,7 +75,22 @@ public class ScannerController {
         State S16 = new StateImpl(false, S14, "S16");
         State S18 = new StateImpl(false, S14, "S18");
         State S19 = new StateImpl(false, S14, "S19");
-
+        State S20 = new StateImpl();
+        State S22 = new StateImpl();
+        State S23 = new StateImpl(true, Tokens.CHAR, "S23");
+        State S24 = new StateImpl(true, Tokens.CHAR, "S24");
+        State S25 = new StateImpl();
+        State S26 = new StateImpl(true, Tokens.CHAR, "S26");
+        State S27 = new StateImpl();
+        State S28 = new StateImpl(true, Tokens.CHAR, "S28");
+        State S29 = new StateImpl();
+        State S30 = new StateImpl();
+        State S31 = new StateImpl();
+        State S32 = new StateImpl(true, Tokens.CHAR, "S32");
+        State S33 = new StateImpl();
+        State S34 = new StateImpl();
+        State S35 = new StateImpl();
+        State S36 = new StateImpl();
         State S42 = new CommentStateImpl();
 
         // Initialize State Transitions
@@ -84,6 +100,7 @@ public class ScannerController {
         S1 = S1.addTransition(new TransitionImpl('.', S13));
         S1 = S1.addTransition(new TransitionImpl('"', S14));
         S1 = S1.addTransition(new TransitionImpl(';', S42));
+        S1 = S1.addTransition(new TransitionImpl('#', S20));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
         S3 = S3.addTransition(new TransitionImpl('+', S6));
         S9 = S9.addTransition(new TransitionImpl('.', S13));
@@ -96,6 +113,22 @@ public class ScannerController {
         S14 = S14.addTransition(new TransitionImpl('\\', S16));
         S16 = S16.addTransition(new TransitionImpl('n', S14));
         S16 = S16.addTransition(new TransitionImpl('t', S14));
+        S20.addTransition(new TransitionImpl('\\', S22));
+        S22.addTransition(new TransitionImpl(S23, 't', 's', 'n', '0', '1', '2', '3'));
+        S22.addTransition(new TransitionImpl('t', S26));
+        S22.addTransition(new TransitionImpl('s', S28));
+        S22.addTransition(new TransitionImpl('n', S32));
+        S26.addTransition(new TransitionImpl('a', S27));
+        S27.addTransition(new TransitionImpl('b', S23));
+        S28.addTransition(new TransitionImpl('p', S29));
+        S29.addTransition(new TransitionImpl('a', S30));
+        S30.addTransition(new TransitionImpl('c', S31));
+        S31.addTransition(new TransitionImpl('e', S23));
+        S32.addTransition(new TransitionImpl('e', S33));
+        S33.addTransition(new TransitionImpl('w', S34));
+        S34.addTransition(new TransitionImpl('l', S35));
+        S35.addTransition(new TransitionImpl('i', S36));
+        S36.addTransition(new TransitionImpl('n', S31));
 
         S42 = S42.addTransition(new TransitionImpl('\n', S1));
         S42 = S42.addTransition(new TransitionImpl(S42, '\n'));
@@ -108,10 +141,15 @@ public class ScannerController {
                     S8 = S8.addTransition(new TransitionImpl(digit, S8));
                 }
                 if (i > 0) S1 = S1.addTransition(new TransitionImpl(digit, S12));
-                if (i <= 3) S16 = S16.addTransition(new TransitionImpl(digit, S18));
-                if (CharUtils.charInRange(digit, 1, 7)) {
+                if (i <= 3) {
+                    S16 = S16.addTransition(new TransitionImpl(digit, S18));
+                    S22.addTransition(new TransitionImpl(digit, S24));
+                }
+                if (CharUtils.charInRange(digit, 0, 7)) {
                     S18 = S18.addTransition(new TransitionImpl(digit, S19));
                     S19 = S19.addTransition(new TransitionImpl(digit, S14));
+                    S24.addTransition(new TransitionImpl(digit, S25));
+                    S25.addTransition(new TransitionImpl(digit, S23));
                 }
                 S3 = S3.addTransition(new TransitionImpl(digit, S7));
                 S4 = S4.addTransition(new TransitionImpl(digit, S10));
@@ -160,7 +198,7 @@ public class ScannerController {
                 fsm = fsm.transition(c);
             } catch (InvalidTokenException e) {
                 System.out.println(e.getMessage());
-                System.exit(-1);
+                return;
             }
         }
 
