@@ -1,4 +1,4 @@
-package com.superscan.enums;
+package main.com.superscan.enums;
 
 @Deprecated
 /**

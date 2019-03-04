@@ -1,6 +1,6 @@
-package com.superscan.transitions;
+package main.com.superscan.transitions;
 
-import com.superscan.states.State;
+import main.com.superscan.states.State;
 
 import java.util.ArrayList;
 import java.util.Arrays;

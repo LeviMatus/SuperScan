@@ -16,18 +16,18 @@
  * tokenizing or labeling tokens.
  */
 
-package com.superscan;
+package main.com.superscan;
 
-import com.superscan.dfa.DFA;
-import com.superscan.dfa.DFAImpl;
-import com.superscan.enums.Tokens;
-import com.superscan.states.CommentStateImpl;
-import com.superscan.states.InitialStateImpl;
-import com.superscan.states.State;
-import com.superscan.states.StateImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.transitions.TransitionImpl;
-import com.superscan.utils.CharUtils;
+import main.com.superscan.dfa.DFA;
+import main.com.superscan.dfa.DFAImpl;
+import main.com.superscan.enums.Tokens;
+import main.com.superscan.states.CommentStateImpl;
+import main.com.superscan.states.InitialStateImpl;
+import main.com.superscan.states.State;
+import main.com.superscan.states.StateImpl;
+import main.com.superscan.dfa.InvalidTokenException;
+import main.com.superscan.transitions.TransitionImpl;
+import main.com.superscan.utils.CharUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,6 +40,8 @@ public class ScannerController {
 
     private DFA fsm;
     private ArrayList<Character> chars = new ArrayList<>();
+
+    public ScannerController(DFA dfa) {this.fsm = dfa;}
 
     public ScannerController(String fName) {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(Main.class.getResource(fName).getFile())))) {
@@ -79,6 +81,7 @@ public class ScannerController {
         S1 = S1.addTransition(new TransitionImpl('0', S11));
         S1 = S1.addTransition(new TransitionImpl('-', S9));
         S1 = S1.addTransition(new TransitionImpl('+', S9));
+        S1 = S1.addTransition(new TransitionImpl('.', S13));
         S1 = S1.addTransition(new TransitionImpl('"', S14));
         S1 = S1.addTransition(new TransitionImpl(';', S42));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
@@ -87,6 +90,7 @@ public class ScannerController {
         S11 = S11.addTransition(new TransitionImpl('b', S2));
         S11 = S11.addTransition(new TransitionImpl('x', S4));
         S11 = S11.addTransition(new TransitionImpl('.', S13));
+        S12 = S12.addTransition(new TransitionImpl('.', S13));
         S14 = S14.addTransition(new TransitionImpl(S14, '"', '\\'));
         S14 = S14.addTransition(new TransitionImpl('"', S15));
         S14 = S14.addTransition(new TransitionImpl('\\', S16));
@@ -132,6 +136,10 @@ public class ScannerController {
         }
 
         fsm = new DFAImpl(S1);
+    }
+
+    public void setChars(ArrayList<Character> chars) {
+        this.chars = chars;
     }
 
     private State addUpperAndLowercase(State state, State next, int i) {

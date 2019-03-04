@@ -1,9 +1,9 @@
-package com.superscan.states;
+package main.com.superscan.states;
 
-import com.superscan.dfa.DFAImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.Tokens;
-import com.superscan.transitions.Transition;
+import main.com.superscan.dfa.DFAImpl;
+import main.com.superscan.dfa.InvalidTokenException;
+import main.com.superscan.enums.Tokens;
+import main.com.superscan.transitions.Transition;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.superscan;
+package main.com.superscan;
 
 public class Main {
 

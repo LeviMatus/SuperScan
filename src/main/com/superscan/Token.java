@@ -1,6 +1,6 @@
-package com.superscan;
+package main.com.superscan;
 
-import com.superscan.enums.Tokens;
+import main.com.superscan.enums.Tokens;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +28,10 @@ public class Token {
 
     public void setType(Tokens type) {
         this.type = type;
+    }
+
+    public Tokens getType() {
+        return type;
     }
 
     @Override
