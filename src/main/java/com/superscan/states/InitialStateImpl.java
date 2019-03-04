@@ -1,7 +1,9 @@
 package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;
-import com.superscan.enums.Tokens;
+import com.superscan.dfa.InvalidTokenException;
+import com.superscan.enums.CharTypeEnum;
+import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.TransitionImpl;
 
 public class InitialStateImpl extends AbstractState {
@@ -11,13 +13,13 @@ public class InitialStateImpl extends AbstractState {
      * Behaviour is changed by calling StateImpl(true).
      */
     public InitialStateImpl() {
-        this(false, Tokens.INDETERMINATE);
+        this(false, TokenEnum.INDETERMINATE);
     }
 
     /**
      * the initial state needs to transition back to itself on whitespaces
      */
-    public InitialStateImpl(final boolean isFinal, final Tokens tokenType) {
+    public InitialStateImpl(final boolean isFinal, final TokenEnum tokenType) {
         super(isFinal, tokenType);
         addTransition(new TransitionImpl(' ', this));
         addTransition(new TransitionImpl('\t', this));

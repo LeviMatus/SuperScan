@@ -2,12 +2,12 @@ package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;
 import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.Transition;
 
 public interface State {
 
-    Tokens getTokenType();
+    TokenEnum getTokenType();
 
     /**
      * This State is an accepting state.
@@ -30,7 +30,7 @@ public interface State {
      */
     State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException;
 
-    default boolean isValidToken(Tokens token) {
-        return !token.equals(Tokens.INDETERMINATE) && !token.equals(Tokens.INVALID);
+    default boolean isValidToken(TokenEnum token) {
+        return !token.equals(TokenEnum.INDETERMINATE) && !token.equals(TokenEnum.INVALID);
     }
 }

@@ -1,7 +1,7 @@
 package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.TransitionImpl;
 
 public class CommentStateImpl extends AbstractState {
@@ -11,13 +11,13 @@ public class CommentStateImpl extends AbstractState {
      * Behaviour is changed by calling StateImpl(true).
      */
     public CommentStateImpl() {
-        this(false, Tokens.INDETERMINATE);
+        this(false, TokenEnum.INDETERMINATE);
     }
 
     /**
      * the initial state needs to transition back to itself on whitespaces
      */
-    public CommentStateImpl(final boolean isFinal, final Tokens tokenType) {
+    public CommentStateImpl(final boolean isFinal, final TokenEnum tokenType) {
         super(isFinal, tokenType);
         addTransition(new TransitionImpl('\n', getInitialState()));
     }
