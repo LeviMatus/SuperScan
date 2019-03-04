@@ -1,0 +1,4 @@
+language: java
+jdk: orcalejdk8
+install: true
+script: ./mvnw clean install
