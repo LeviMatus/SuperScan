@@ -7,7 +7,9 @@ import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.Transition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractState implements State {
 
@@ -15,11 +17,16 @@ public abstract class AbstractState implements State {
     private boolean isFinal;
     private TokenEnum tokenType;
     private static State initialState;
+    private static Map<TokenEnum, State> singleCharStates = new HashMap<>();
 
     AbstractState(final boolean isFinal, final TokenEnum tokenType) {
         this.transitions = new ArrayList<>();
         this.isFinal = isFinal;
         this.tokenType = tokenType;
+
+        if (tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) {
+            singleCharStates.put(tokenType, this);
+        }
     }
 
     public boolean isFinal() { return this.isFinal; }
@@ -30,6 +37,10 @@ public abstract class AbstractState implements State {
      */
     static State getInitialState() {
         return initialState;
+    }
+
+    public static Map<TokenEnum, State> getSingleCharStates() {
+        return singleCharStates;
     }
 
     static void setInitialState(State initialState) {
@@ -64,10 +75,15 @@ public abstract class AbstractState implements State {
                 .findAny()
                 .orElseGet(() -> attemptFallback(c, dfa));
 
-        if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE))
-            return handleSingeCharDelimitation(c, result, dfa);
+        if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE)) {
+            if (!this.equals(initialState)) {
+                delimitSingleCharacterToken(c, dfa);
+                singleCharStates.get(result.getTokenType());
+            }
+            return delimitSingleCharacterToken(c, result, dfa);
+        }
         if (result.equals(initialState) )
-            return handleDelimitation(c, result, dfa);
+            return delimitWithWhitespace(c, result, dfa);
 
         dfa.addCharToToken(c);
         return result;
@@ -77,7 +93,7 @@ public abstract class AbstractState implements State {
         throw new IllegalArgumentException("FAILURE");
     }
 
-    public State handleDelimitation(final Character c, final State state, final DFAImpl dfa) throws InvalidTokenException {
+    public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) throws InvalidTokenException {
         if (dfa.isAborting()) throw dfa.generateError();
         if (isValidToken(this.tokenType)) {
             dfa.delimitToken();
@@ -87,7 +103,13 @@ public abstract class AbstractState implements State {
         return state;
     }
 
-    private State handleSingeCharDelimitation(final Character c, final State state, final DFAImpl dfa) {
+    private void delimitSingleCharacterToken(final Character c, final DFAImpl dfa) {
+        dfa.delimitToken();
+        dfa.decrementOffset();
+        dfa.handleWhitespace(c);
+    }
+
+    private State delimitSingleCharacterToken(final Character c, final State state, final DFAImpl dfa) {
         dfa.addSingleCharToken(c, state);
         dfa.handleWhitespace(c);
         return initialState;

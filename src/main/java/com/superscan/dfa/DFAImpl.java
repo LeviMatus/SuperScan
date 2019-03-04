@@ -109,6 +109,10 @@ public final class DFAImpl implements DFA {
         this.acceptToken(state.getTokenType());
     }
 
+    public void decrementOffset() {
+        this.offset--;
+    }
+
     /**
      * Transition the DFA from reading a character.
      *
