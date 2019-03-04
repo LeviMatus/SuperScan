@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ScannerTest extends AbstractScannerClass<Integer> {
+public class NumberScannerTest extends AbstractScannerTest<Integer> {
 
     private State S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13;
 

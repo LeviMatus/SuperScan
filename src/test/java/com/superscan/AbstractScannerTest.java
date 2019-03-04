@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 
-public abstract class AbstractScannerClass<T> {
+public abstract class AbstractScannerTest<T> {
 
     DFA dfa;
     static State S1;

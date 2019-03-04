@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CharacterScannerTest extends AbstractScannerClass<Character> {
+public class CharacterScannerTest extends AbstractScannerTest<Character> {
 
     private static State S20, S22, S23, S24, S25, S26, S27, S28, S29, S30, S31, S32, S33, S34, S35, S36;
 
@@ -33,7 +33,7 @@ public class CharacterScannerTest extends AbstractScannerClass<Character> {
         State S35 = new StateImpl();
         State S36 = new StateImpl();
 
-        AbstractScannerClass.getS1().addTransition(new TransitionImpl('#', S20));
+        AbstractScannerTest.getS1().addTransition(new TransitionImpl('#', S20));
 
         S20.addTransition(new TransitionImpl('\\', S22));
         S22.addTransition(new TransitionImpl(S23, 't', 's', 'n', '0', '1', '2', '3'));
