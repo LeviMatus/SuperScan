@@ -1,6 +1,6 @@
 package com.superscan;
 
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ public class Token {
 
     private String val;
     private Integer row, col;
-    private Tokens type;
+    private TokenEnum type;
 
     public Token(Integer row, Integer col) {
         val = "";
@@ -26,17 +26,17 @@ public class Token {
         val += c;
     }
 
-    public void setType(Tokens type) {
+    public void setType(TokenEnum type) {
         this.type = type;
     }
 
-    public Tokens getType() {
+    public TokenEnum getType() {
         return type;
     }
 
     @Override
     public String toString() {
-        if (type == null || type.equals(Tokens.INVALID) || type.equals(Tokens.INDETERMINATE))
+        if (type == null || type.equals(TokenEnum.INVALID) || type.equals(TokenEnum.INDETERMINATE))
             return String.format("LEXICAL ERROR [%d:%d]: Invalid token `%s'",
                     row, col, val);
         return String.format("%s %d:%d", type.toString(), row, col);

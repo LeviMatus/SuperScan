@@ -1,6 +1,6 @@
 package com.superscan;
 
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.transitions.TransitionImpl;
@@ -18,14 +18,14 @@ public class NumberScannerTest extends AbstractScannerTest<Integer> {
         S2 = new StateImpl();
         S3 = new StateImpl();
         S4 = new StateImpl();
-        S5 = new StateImpl(true, Tokens.NUMBER);
+        S5 = new StateImpl(true, TokenEnum.NUMBER);
         S6 = new StateImpl();
-        S7 = new StateImpl(true, Tokens.NUMBER);
-        S8 = new StateImpl(true, Tokens.NUMBER);
+        S7 = new StateImpl(true, TokenEnum.NUMBER);
+        S8 = new StateImpl(true, TokenEnum.NUMBER);
         S9 = new StateImpl();
-        S10 = new StateImpl(true, Tokens.NUMBER);
-        S11 = new StateImpl(true, Tokens.NUMBER);
-        S12 = new StateImpl(true, Tokens.NUMBER);
+        S10 = new StateImpl(true, TokenEnum.NUMBER);
+        S11 = new StateImpl(true, TokenEnum.NUMBER);
+        S12 = new StateImpl(true, TokenEnum.NUMBER);
         S13 = new StateImpl();
 
         getS1().addTransition(new TransitionImpl('0', S11));
@@ -152,6 +152,6 @@ public class NumberScannerTest extends AbstractScannerTest<Integer> {
         scannerController.setChars(characters);
         scannerController.analyzeFile();
         assertEquals(1, dfa.getAcceptedTokens().size(), "There should be 1 accepted token.");
-        assertEquals(Tokens.NUMBER, dfa.getAcceptedTokens().get(0).getType(), message);
+        assertEquals(TokenEnum.NUMBER, dfa.getAcceptedTokens().get(0).getType(), message);
     }
 }

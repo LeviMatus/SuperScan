@@ -1,6 +1,7 @@
 package com.superscan.dfa;
 
 import com.superscan.Token;
+import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 
 import java.util.ArrayList;
@@ -72,13 +73,17 @@ public final class DFAImpl implements DFA {
         this.pendingToken = new Token(this.lineNum, this.start);
     }
 
+    private void acceptToken(TokenEnum tokenEnum) {
+        this.pendingToken.setType(tokenEnum);
+        this.acceptedTokens.add(this.pendingToken);
+    }
+
     /**
      * Delimit a token if its char construction is longer than 0.
      */
     public void delimitToken() {
         if (this.pendingToken.getVal().length() > 0) {
-            this.pendingToken.setType(this.current.getTokenType());
-            this.acceptedTokens.add(this.pendingToken);
+            acceptToken(this.current.getTokenType());
         }
     }
 
@@ -97,6 +102,11 @@ public final class DFAImpl implements DFA {
     public void addCharToToken(Character c) {
         this.pendingToken.addChar(c);
         this.offset++;
+    }
+
+    public void addSingleCharToken(Character c, State state) {
+        this.pendingToken.addChar(c);
+        this.acceptToken(state.getTokenType());
     }
 
     /**
