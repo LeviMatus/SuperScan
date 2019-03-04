@@ -28,10 +28,10 @@ public class ScannerTest extends AbstractScannerClass<Integer> {
         S12 = new StateImpl(true, Tokens.NUMBER);
         S13 = new StateImpl();
 
-        this.getS1().addTransition(new TransitionImpl('0', S11));
-        this.getS1().addTransition(new TransitionImpl('-', S9));
-        this.getS1().addTransition(new TransitionImpl('+', S9));
-        this.getS1().addTransition(new TransitionImpl('.', S13));
+        getS1().addTransition(new TransitionImpl('0', S11));
+        getS1().addTransition(new TransitionImpl('-', S9));
+        getS1().addTransition(new TransitionImpl('+', S9));
+        getS1().addTransition(new TransitionImpl('.', S13));
         S3.addTransition(new TransitionImpl('-', S6));
         S3.addTransition(new TransitionImpl('+', S6));
         S9.addTransition(new TransitionImpl('.', S13));

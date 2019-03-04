@@ -5,6 +5,7 @@ import com.superscan.dfa.DFAImpl;
 import com.superscan.states.InitialStateImpl;
 import com.superscan.states.State;
 import com.superscan.transitions.TransitionImpl;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
@@ -12,20 +13,24 @@ import java.util.ArrayList;
 public abstract class AbstractScannerClass<T> {
 
     DFA dfa;
-    State S1;
+    static State S1;
     ArrayList<Character> characters;
     ScannerController scannerController;
 
-    @BeforeEach
-    public void setup() {
+    @BeforeAll
+    static void setup() {
         S1 = new InitialStateImpl();
+    }
+
+    @BeforeEach
+    void reset() {
         dfa = new DFAImpl(S1);
         scannerController = new ScannerController(dfa);
 
         characters = new ArrayList<>();
     }
 
-    public State getS1() {
+    static State getS1() {
         return S1;
     }
 
