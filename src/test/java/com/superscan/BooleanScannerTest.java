@@ -1,6 +1,6 @@
 package com.superscan;
 
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.transitions.TransitionImpl;
@@ -16,7 +16,7 @@ public class BooleanScannerTest extends AbstractScannerTest<Boolean> {
     @BeforeAll
     static void constructStates() {
         S20 = new StateImpl();
-        S21 = new StateImpl(true, Tokens.BOOLEAN, "S21");
+        S21 = new StateImpl(true, TokenEnum.BOOLEAN, "S21");
         getS1().addTransition(new TransitionImpl('#', S20));
         S20.addTransition(new TransitionImpl('t', S21));
         S20.addTransition(new TransitionImpl('f', S21));
@@ -45,7 +45,7 @@ public class BooleanScannerTest extends AbstractScannerTest<Boolean> {
         scannerController.setChars(characters);
         scannerController.analyzeFile();
         assertEquals(1, dfa.getAcceptedTokens().size(), "There should be 1 accepted token.");
-        assertEquals(Tokens.BOOLEAN, dfa.getAcceptedTokens().get(0).getType(), message);
+        assertEquals(TokenEnum.BOOLEAN, dfa.getAcceptedTokens().get(0).getType(), message);
     }
 
 }

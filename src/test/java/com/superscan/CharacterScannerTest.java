@@ -1,6 +1,6 @@
 package com.superscan;
 
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.transitions.TransitionImpl;
@@ -18,16 +18,16 @@ public class CharacterScannerTest extends AbstractScannerTest<Character> {
     static void constructStates() {
         State S20 = new StateImpl();
         State S22 = new StateImpl();
-        State S23 = new StateImpl(true, Tokens.CHAR, "S23");
-        State S24 = new StateImpl(true, Tokens.CHAR, "S24");
+        State S23 = new StateImpl(true, TokenEnum.CHAR, "S23");
+        State S24 = new StateImpl(true, TokenEnum.CHAR, "S24");
         State S25 = new StateImpl();
-        State S26 = new StateImpl(true, Tokens.CHAR, "S26");
+        State S26 = new StateImpl(true, TokenEnum.CHAR, "S26");
         State S27 = new StateImpl();
-        State S28 = new StateImpl(true, Tokens.CHAR, "S28");
+        State S28 = new StateImpl(true, TokenEnum.CHAR, "S28");
         State S29 = new StateImpl();
         State S30 = new StateImpl();
         State S31 = new StateImpl();
-        State S32 = new StateImpl(true, Tokens.CHAR, "S32");
+        State S32 = new StateImpl(true, TokenEnum.CHAR, "S32");
         State S33 = new StateImpl();
         State S34 = new StateImpl();
         State S35 = new StateImpl();
@@ -174,6 +174,6 @@ public class CharacterScannerTest extends AbstractScannerTest<Character> {
         scannerController.setChars(characters);
         scannerController.analyzeFile();
         assertEquals(1, dfa.getAcceptedTokens().size(), "There should be 1 accepted token.");
-        assertEquals(Tokens.CHAR, dfa.getAcceptedTokens().get(0).getType(), message);
+        assertEquals(TokenEnum.CHAR, dfa.getAcceptedTokens().get(0).getType(), message);
     }
 }

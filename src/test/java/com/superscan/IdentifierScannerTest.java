@@ -1,6 +1,6 @@
 package com.superscan;
 
-import com.superscan.enums.Tokens;
+import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 import com.superscan.states.StateImpl;
 import com.superscan.transitions.TransitionImpl;
@@ -20,7 +20,7 @@ public class IdentifierScannerTest extends AbstractScannerTest<String> {
 
     @BeforeAll
     static void constructStates() {
-        State S76 = new StateImpl(true, Tokens.IDENTIFIER, "S76");
+        State S76 = new StateImpl(true, TokenEnum.IDENTIFIER, "S76");
 
         for (int i = 0; i < 26; i++) {
             addUpperAndLowercase(getS1(), S76, i);
@@ -43,6 +43,6 @@ public class IdentifierScannerTest extends AbstractScannerTest<String> {
         scannerController.setChars(characters);
         scannerController.analyzeFile();
         assertEquals(1, dfa.getAcceptedTokens().size(), "There should be 1 accepted token.");
-        assertEquals(Tokens.IDENTIFIER, dfa.getAcceptedTokens().get(0).getType(), message);
+        assertEquals(TokenEnum.IDENTIFIER, dfa.getAcceptedTokens().get(0).getType(), message);
     }
 }
