@@ -2,7 +2,8 @@ package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;
 import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.Tokens;
+import com.superscan.enums.CharTypeEnum;
+import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.Transition;
 
 import java.util.ArrayList;
@@ -12,17 +13,17 @@ public abstract class AbstractState implements State {
 
     private List<Transition> transitions;
     private boolean isFinal;
-    private Tokens tokenType;
+    private TokenEnum tokenType;
     private static State initialState;
 
-    AbstractState(final boolean isFinal, final Tokens tokenType) {
+    AbstractState(final boolean isFinal, final TokenEnum tokenType) {
         this.transitions = new ArrayList<>();
         this.isFinal = isFinal;
         this.tokenType = tokenType;
     }
 
     public boolean isFinal() { return this.isFinal; }
-    public Tokens getTokenType() { return this.tokenType; }
+    public TokenEnum getTokenType() { return this.tokenType; }
 
     /**
      * @return State the initial state of the DFA
@@ -61,17 +62,18 @@ public abstract class AbstractState implements State {
                 .filter(transition -> transition.isValid(c))
                 .map(Transition::next)
                 .findAny()
-                .orElseGet(() -> attemptFallback(dfa));
+                .orElseGet(() -> attemptFallback(c, dfa));
 
-        if (result.equals(initialState)) {
+        if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE))
+            return handleSingeCharDelimitation(c, result, dfa);
+        if (result.equals(initialState) )
             return handleDelimitation(c, result, dfa);
-        }
 
         dfa.addCharToToken(c);
         return result;
     }
 
-    public State attemptFallback(final DFAImpl dfa) {
+    public State attemptFallback(final Character c, final DFAImpl dfa) {
         throw new IllegalArgumentException("FAILURE");
     }
 
@@ -83,6 +85,12 @@ public abstract class AbstractState implements State {
         }
         else throw dfa.generateError();
         return state;
+    }
+
+    private State handleSingeCharDelimitation(final Character c, final State state, final DFAImpl dfa) {
+        dfa.addSingleCharToken(c, state);
+        dfa.handleWhitespace(c);
+        return initialState;
     }
 
 }
