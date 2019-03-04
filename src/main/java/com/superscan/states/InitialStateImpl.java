@@ -28,7 +28,7 @@ public class InitialStateImpl extends AbstractState {
     }
 
     @Override
-    public State handleDelimitation(final Character c, final State state, final DFAImpl dfa) {
+    public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) {
         dfa.handleWhitespace(c);
         return state;
     }

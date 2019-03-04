@@ -1,1 +1,1 @@
-other 'test
+''test' (define x)x [cond))

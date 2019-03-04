@@ -1,6 +1,7 @@
 package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;
+import com.superscan.enums.CharTypeEnum;
 import com.superscan.enums.TokenEnum;
 import com.superscan.transitions.TransitionImpl;
 
@@ -33,6 +34,8 @@ public class StateImpl extends AbstractState {
         this.addTransition(new TransitionImpl(' ', getInitialState()));
         this.addTransition(new TransitionImpl('\t', getInitialState()));
         this.addTransition(new TransitionImpl('\n', getInitialState()));
+        if (isFinal && !tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) addSingleCharTokenTransitions();
+
     }
 
     public StateImpl(final boolean isFinal, final TokenEnum tokenType, String label) {
@@ -41,6 +44,8 @@ public class StateImpl extends AbstractState {
         this.addTransition(new TransitionImpl(' ', getInitialState()));
         this.addTransition(new TransitionImpl('\t', getInitialState()));
         this.addTransition(new TransitionImpl('\n', getInitialState()));
+        if (isFinal && !tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) addSingleCharTokenTransitions();
+
     }
 
     /**
@@ -54,11 +59,28 @@ public class StateImpl extends AbstractState {
             this.addTransition(new TransitionImpl('\t', getInitialState()));
             this.addTransition(new TransitionImpl('\n', getInitialState()));
         }
+        if (isFinal && !tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) addSingleCharTokenTransitions();
     }
 
     public StateImpl(final boolean isFinal, final TokenEnum tokenType, final boolean stdDelimiter, State fallback, String label) {
         this(isFinal, tokenType, stdDelimiter, label);
         this.fallback = fallback;
+    }
+
+    private void addSingleCharTokenTransitions() {
+        for (TokenEnum tokenEnum : getSingleCharStates().keySet()) {
+            TransitionImpl trans = null;
+            switch (tokenEnum) {
+                case CLOSERD: trans = new TransitionImpl(')', getSingleCharStates().get(tokenEnum)); break;
+                case OPENRD: trans = new TransitionImpl('(', getSingleCharStates().get(tokenEnum)); break;
+                case OPENSQ: trans = new TransitionImpl('[', getSingleCharStates().get(tokenEnum)); break;
+                case OPENCU: trans = new TransitionImpl('{', getSingleCharStates().get(tokenEnum)); break;
+                case CLOSESQ: trans = new TransitionImpl(']', getSingleCharStates().get(tokenEnum)); break;
+                case CLOSECU: trans = new TransitionImpl('}', getSingleCharStates().get(tokenEnum)); break;
+                case SINGLE_QOUTE: trans = new TransitionImpl('\'', getSingleCharStates().get(tokenEnum)); break;
+            }
+            this.addTransition(trans);
+        }
     }
 
     @Override

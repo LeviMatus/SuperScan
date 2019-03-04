@@ -55,6 +55,15 @@ public class ScannerController {
 
         // States to belong to DFA
         State S1 = new InitialStateImpl();
+
+        State S38 = new StateImpl(true, TokenEnum.SINGLE_QOUTE);
+        State S39 = new StateImpl(true, TokenEnum.OPENRD);
+        State S40 = new StateImpl(true, TokenEnum.CLOSERD);
+        State S41 = new StateImpl(true, TokenEnum.OPENSQ);
+        State S43 = new StateImpl(true, TokenEnum.CLOSESQ);
+        State S44 = new StateImpl(true, TokenEnum.OPENCU);
+        State S45 = new StateImpl(true, TokenEnum.CLOSECU);
+
         State S2 = new StateImpl();
         State S3 = new StateImpl();
         State S4 = new StateImpl();
@@ -89,7 +98,6 @@ public class ScannerController {
         State S34 = new StateImpl();
         State S35 = new StateImpl();
         State S36 = new StateImpl();
-        State S38 = new StateImpl(true, TokenEnum.SINGLE_QOUTE);
         State S42 = new CommentStateImpl();
         State S76 = new StateImpl(true, TokenEnum.IDENTIFIER, "S76");
 
@@ -101,6 +109,12 @@ public class ScannerController {
         S1 = S1.addTransition(new TransitionImpl('"', S14));
         S1 = S1.addTransition(new TransitionImpl(';', S42));
         S1 = S1.addTransition(new TransitionImpl('#', S20));
+        S1.addTransition(new TransitionImpl('(', S39));
+        S1.addTransition(new TransitionImpl(')', S40));
+        S1.addTransition(new TransitionImpl('[', S41));
+        S1.addTransition(new TransitionImpl(']', S43));
+        S1.addTransition(new TransitionImpl('{', S44));
+        S1.addTransition(new TransitionImpl('}', S45));
         S1.addTransition(new TransitionImpl('\'', S38));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
         S3 = S3.addTransition(new TransitionImpl('+', S6));
