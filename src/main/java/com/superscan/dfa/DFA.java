@@ -1,6 +1,6 @@
-package main.com.superscan.dfa;
+package com.superscan.dfa;
 
-import main.com.superscan.Token;
+import com.superscan.Token;
 
 import java.util.List;
 

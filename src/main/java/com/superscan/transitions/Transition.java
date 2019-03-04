@@ -1,6 +1,6 @@
-package main.com.superscan.transitions;
+package com.superscan.transitions;
 
-import main.com.superscan.states.State;
+import com.superscan.states.State;
 
 public interface Transition {
 

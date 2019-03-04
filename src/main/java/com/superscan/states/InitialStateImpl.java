@@ -1,8 +1,8 @@
-package main.com.superscan.states;
+package com.superscan.states;
 
-import main.com.superscan.dfa.DFAImpl;
-import main.com.superscan.enums.Tokens;
-import main.com.superscan.transitions.TransitionImpl;
+import com.superscan.dfa.DFAImpl;
+import com.superscan.enums.Tokens;
+import com.superscan.transitions.TransitionImpl;
 
 public class InitialStateImpl extends AbstractState {
 
