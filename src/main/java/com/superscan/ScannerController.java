@@ -20,9 +20,12 @@ package com.superscan;
 
 import com.superscan.dfa.DFA;
 import com.superscan.dfa.DFAImpl;
-import com.superscan.enums.TokenEnum;
-import com.superscan.states.*;
 import com.superscan.dfa.InvalidTokenException;
+import com.superscan.enums.TokenEnum;
+import com.superscan.states.CommentStateImpl;
+import com.superscan.states.InitialStateImpl;
+import com.superscan.states.State;
+import com.superscan.states.StateImpl;
 import com.superscan.transitions.TransitionImpl;
 import com.superscan.utils.CharUtils;
 
@@ -30,7 +33,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
