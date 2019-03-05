@@ -71,7 +71,7 @@ public class ScannerController {
         State S6 = new StateImpl();
         State S7 = new StateImpl(true, TokenEnum.NUMBER);
         State S8 = new StateImpl(true, TokenEnum.NUMBER);
-        State S9 = new StateImpl();
+        State S9 = new StateImpl(true, TokenEnum.IDENTIFIER);
         State S10 = new StateImpl(true, TokenEnum.NUMBER);
         State S11 = new StateImpl(true, TokenEnum.NUMBER);
         State S12 = new StateImpl(true, TokenEnum.NUMBER);
@@ -116,6 +116,7 @@ public class ScannerController {
         S1.addTransition(new TransitionImpl('{', S44));
         S1.addTransition(new TransitionImpl('}', S45));
         S1.addTransition(new TransitionImpl('\'', S38));
+        S1.addTransition(new TransitionImpl('=', S76));
         S3 = S3.addTransition(new TransitionImpl('-', S6));
         S3 = S3.addTransition(new TransitionImpl('+', S6));
         S9 = S9.addTransition(new TransitionImpl('.', S13));
