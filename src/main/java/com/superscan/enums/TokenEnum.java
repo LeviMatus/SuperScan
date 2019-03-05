@@ -9,7 +9,7 @@ public enum TokenEnum {
     MULTI_QUOTE("QUOTE", CharTypeEnum.MULTI),
     SINGLE_QOUTE("QUOTE", CharTypeEnum.SINGLE),
     OPENRD("OPENRD", CharTypeEnum.SINGLE),
-    CLOSERD("CLOSEDRD", CharTypeEnum.SINGLE),
+    CLOSERD("CLOSERD", CharTypeEnum.SINGLE),
     OPENSQ("OPENSQ", CharTypeEnum.SINGLE),
     CLOSESQ("CLOSESQ", CharTypeEnum.SINGLE),
     OPENCU("OPENCU", CharTypeEnum.SINGLE),

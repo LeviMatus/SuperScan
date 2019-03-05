@@ -1,13 +1,11 @@
 package com.superscan.dfa;
 
 import com.superscan.Token;
+import com.superscan.enums.KeywordEnum;
 import com.superscan.enums.TokenEnum;
 import com.superscan.states.State;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public final class DFAImpl implements DFA {
 
@@ -16,6 +14,7 @@ public final class DFAImpl implements DFA {
     private Token pendingToken;
     private List<Token> acceptedTokens;
     private boolean isAborting;
+    private List<KeywordEnum> keywords;
 
     /**
      * Sets up a DFA given a starting state.
@@ -27,6 +26,7 @@ public final class DFAImpl implements DFA {
         this.current = initial;
         this.pendingToken = new Token(this.start, this.lineNum);
         this.acceptedTokens = new ArrayList<>();
+        this.keywords = new ArrayList<>(EnumSet.allOf(KeywordEnum.class));
     }
 
     /**
@@ -83,7 +83,11 @@ public final class DFAImpl implements DFA {
      */
     public void delimitToken() {
         if (this.pendingToken.getVal().length() > 0) {
-            acceptToken(this.current.getTokenType());
+            Optional<KeywordEnum> keyword = keywords.stream()
+                    .filter(keywordEnum -> keywordEnum.isKeyword(this.pendingToken.getVal()))
+                    .findAny();
+            if (keyword.isPresent()) acceptToken(keyword.get().getToken());
+            else acceptToken(this.current.getTokenType());
         }
     }
 
