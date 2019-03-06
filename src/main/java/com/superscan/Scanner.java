@@ -1,6 +1,6 @@
 package com.superscan;
 
-public class Main {
+public class Scanner {
 
     public static void main(String[] args) {
         if (args.length == 0) {
