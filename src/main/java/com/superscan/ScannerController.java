@@ -44,7 +44,7 @@ public class ScannerController {
     public ScannerController(DFA dfa) {this.fsm = dfa;}
 
     public ScannerController(String fName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("./".concat(fName))))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(fName)))) {
             while (br.ready()) {
                 Character[] lineChars = br.readLine().chars().mapToObj(c -> (char)c).toArray(Character[]::new);
                 chars.addAll(Arrays.asList(lineChars));
