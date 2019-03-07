@@ -39,10 +39,11 @@ public abstract class AbstractState implements State {
         return initialState;
     }
 
-    public static Map<TokenEnum, State> getSingleCharStates() {
+    static Map<TokenEnum, State> getSingleCharStates() {
         return singleCharStates;
     }
 
+    // Set initial state for all states
     static void setInitialState(State initialState) {
         AbstractState.initialState = initialState;
     }
@@ -67,6 +68,7 @@ public abstract class AbstractState implements State {
      */
     @Override
     public State transition(final Character c, final DFAImpl dfa) throws InvalidTokenException {
+        // Search all of this states transitions and find one that matches.
         State result = transitions
                 .stream()
                 .filter(transition -> transition.isValid(c))
@@ -74,6 +76,7 @@ public abstract class AbstractState implements State {
                 .findAny()
                 .orElseGet(() -> attemptFallback(c, dfa));
 
+         // If this is a single-char accepting state then immediately delimit it. Other chars are allowed to follow.
         if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE)) {
             if (!this.equals(initialState)) {
                 delimitSingleCharacterToken(c, dfa);
@@ -81,6 +84,8 @@ public abstract class AbstractState implements State {
             }
             return delimitSingleCharacterToken(c, result, dfa);
         }
+
+        // Standard delimitation case. Whitespace.
         if (result.equals(initialState) )
             return delimitWithWhitespace(c, result, dfa);
 
@@ -88,10 +93,22 @@ public abstract class AbstractState implements State {
         return result;
     }
 
+    // Fallback to a state upon errors to finish parsing Multi-Char tokens.
     public State attemptFallback(final Character c, final DFAImpl dfa) {
         throw new IllegalArgumentException("FAILURE");
     }
 
+    /**
+     * Delimit tokens on whitespace if not originating from initial state. If the DFA is now finished tokenizing an
+     * invalid multi-char token, then it throws an error and finishes execution. Otherwise, assuming the token is valid,
+     * the DFA delimits the token and continues.
+     *
+     * @param c Character being read
+     * @param state State being transitioned to.
+     * @param dfa DFA to which the state belongs
+     * @return state
+     * @throws InvalidTokenException if the multi-char token is invalid and the DFA has been flagged so already.
+     */
     public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) throws InvalidTokenException {
         if (dfa.isAborting()) throw dfa.generateError();
         if (isValidToken(this.tokenType)) {
@@ -102,12 +119,14 @@ public abstract class AbstractState implements State {
         return state;
     }
 
+    // special case where singe char token is being read after another token. Offset should not increase.
     private void delimitSingleCharacterToken(final Character c, final DFAImpl dfa) {
         dfa.delimitToken();
         dfa.decrementOffset();
         dfa.handleWhitespace(c);
     }
 
+    // singe-char token is read from the initial state. Offset should increase.
     private State delimitSingleCharacterToken(final Character c, final State state, final DFAImpl dfa) {
         dfa.addSingleCharToken(c, state);
         dfa.handleWhitespace(c);
