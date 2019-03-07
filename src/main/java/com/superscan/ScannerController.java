@@ -218,7 +218,7 @@ public class ScannerController {
 
         for (Character c : chars) {
             try {
-                fsm = fsm.transition(c);
+                fsm.transition(c);
             } catch (InvalidTokenException e) {
                 System.out.println(e.getMessage());
                 return;

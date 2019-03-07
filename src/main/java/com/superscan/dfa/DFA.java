@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DFA {
 
-    DFA transition(final Character c) throws InvalidTokenException;
+    void transition(final Character c) throws InvalidTokenException;
 
     List<Token> getAcceptedTokens();
 

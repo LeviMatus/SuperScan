@@ -121,10 +121,9 @@ public final class DFAImpl implements DFA {
      * Transition the DFA from reading a character.
      *
      * @param c Character. Next char from the char stream.
-     * @return State. State which has been transitioned to.
      * @throws InvalidTokenException if the DFA does not accept a token.
      */
-    public DFA transition(final Character c) throws InvalidTokenException {
+    public void transition(final Character c) throws InvalidTokenException {
         try {
             this.current = this.current.transition(c, this);
         } catch (IllegalArgumentException e) {
@@ -132,7 +131,6 @@ public final class DFAImpl implements DFA {
             if (!this.isAborting) this.isAborting = true;
             if (this.pendingToken.getVal().length() == 1) throw generateError();
         }
-        return this;
     }
 
 }
