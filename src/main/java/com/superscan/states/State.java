@@ -1,3 +1,12 @@
+/**
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/State.java
+ *
+ * This hasn't changed much. Most of the heavy logic changes we placed in the Abstract State class.
+ * We have added a default method here shared between all State implementations
+ */
+
 package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;

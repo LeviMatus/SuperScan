@@ -1,3 +1,13 @@
+/**
+ *
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/RtTransition.java
+ *
+ * This has changed in that we also want to include NEGATIVE relations. That is, we wanted to be able to switch
+ * states on a valid transition, but also on a "not in the set of" conditions.
+ */
+
 package com.superscan.transitions;
 
 import com.superscan.states.State;

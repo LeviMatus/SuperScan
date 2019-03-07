@@ -1,3 +1,11 @@
+/**
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/RtFiniteStateMachine.java
+ *
+ * This has changed a lot. We have to keep track of far more information that does Baeldung.
+ */
+
 package com.superscan.dfa;
 
 import com.superscan.Token;

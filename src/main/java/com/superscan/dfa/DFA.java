@@ -1,3 +1,11 @@
+/**
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/FiniteStateMachine.java
+ *
+ * The interface itself hasn't changed much. We enforce that we should be able to return the accepted tokens.
+ */
+
 package com.superscan.dfa;
 
 import com.superscan.Token;

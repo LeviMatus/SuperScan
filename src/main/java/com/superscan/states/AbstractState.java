@@ -1,3 +1,18 @@
+/**
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/RtState.java
+ *
+ * This has changed a lot. We required the ability to have different transitions and delimitation techniques depending
+ * on what type of char was being read. We abstracted out base logic from the original state implementation and then
+ * made different concrete state implementations. This simplified handling initial states reading chars, comments states,
+ * and standard states.
+ *
+ * This implementation is not extremely clean. We should have given states more control over delimitation, but
+ * with time we sort of pigeonholed ourselves into this setup. It would be a good refactoring practice to come in here
+ * and consolidate some of the delimitation logic with the DFA as well.
+ */
+
 package com.superscan.states;
 
 import com.superscan.dfa.DFAImpl;

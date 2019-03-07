@@ -1,3 +1,11 @@
+/**
+ * REFERENCES
+ *
+ * https://github.com/eugenp/tutorials/blob/master/algorithms-miscellaneous-1/src/main/java/com/baeldung/algorithms/automata/Transition.java
+ *
+ * This interface remains mostly untouched, aside from renaming a few methods more to our taste.
+ */
+
 package com.superscan.transitions;
 
 import com.superscan.states.State;

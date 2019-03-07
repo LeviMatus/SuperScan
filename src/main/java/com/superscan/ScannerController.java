@@ -14,6 +14,10 @@
  * Our controller, states, DFA, and transitions are all based on the code from above. However, the Baeldung
  * implementation is somewhat limited. It is for a general state-change pattern. It does not broach the topic of
  * tokenizing or labeling tokens.
+ *
+ * You'll find that our code has adopted the spirit of their's, and while the interfaces remain roughly the same,
+ * we've really only adopted their design pattern, not their code explicitly. We will leave references in headers of all
+ * classes we've adopted from Baeldung.
  */
 
 package com.superscan;
