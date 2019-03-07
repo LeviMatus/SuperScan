@@ -9,7 +9,7 @@ import java.util.Optional;
 public class Token {
 
     private String val;
-    private Integer row, col;
+    private Integer row, col;  //row number and row index.
     private TokenEnum type;
 
     public Token(Integer row, Integer col) {
@@ -30,10 +30,6 @@ public class Token {
         this.type = type;
     }
 
-    public TokenEnum getType() {
-        return type;
-    }
-
     @Override
     public String toString() {
         if (type == null || type.equals(TokenEnum.INVALID) || type.equals(TokenEnum.INDETERMINATE))
@@ -42,6 +38,10 @@ public class Token {
         return String.format("%s %d:%d", type.toString(), row, col);
     }
 
+    /**
+     * Strings may have newlines. We need to find any if they exist to appropriately handle offset/newline updating.
+     * @return
+     */
     public Optional<Map<String, Integer>> handleMultilineStrings() {
         Long number = this.val.chars()
                 .mapToObj(e -> (char) e)
