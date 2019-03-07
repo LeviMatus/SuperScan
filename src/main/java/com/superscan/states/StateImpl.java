@@ -8,22 +8,27 @@ import com.superscan.transitions.TransitionImpl;
 public class StateImpl extends AbstractState {
 
     private State fallback;
-    private String label;
 
     /**
-     * Default constructor sets isFinal to false by default.
-     * Behaviour is changed by calling StateImpl(true).
+     * Standard State Constructors
+     *
+     * Parameters:
+     *   isFinal: is this a final state? boolean.
+     *   stdDelimiter: does this state use standard whitespace delimiters? Strings do not.
+     *   fallbak: If reading a multichar token and an error occurs, where do we fall back to continue tokenizing?
+     *   tokenType: If a final state, what type of token is this?
      */
+
     public StateImpl() {
         this(false, TokenEnum.INDETERMINATE);
     }
 
-    public StateImpl(boolean stdDelimiter, String label) {
-        this(false, TokenEnum.INDETERMINATE, stdDelimiter, label);
+    public StateImpl(boolean stdDelimiter) {
+        this(false, TokenEnum.INDETERMINATE, stdDelimiter);
     }
 
-    public StateImpl(boolean stdDelimiter, State fallback, String label) {
-        this(false, TokenEnum.INDETERMINATE, stdDelimiter, fallback, label);
+    public StateImpl(boolean stdDelimiter, State fallback) {
+        this(false, TokenEnum.INDETERMINATE, stdDelimiter, fallback);
     }
 
     /**
@@ -38,22 +43,11 @@ public class StateImpl extends AbstractState {
 
     }
 
-    public StateImpl(final boolean isFinal, final TokenEnum tokenType, String label) {
-        super(isFinal, tokenType);
-        this.label = label;
-        this.addTransition(new TransitionImpl(' ', getInitialState()));
-        this.addTransition(new TransitionImpl('\t', getInitialState()));
-        this.addTransition(new TransitionImpl('\n', getInitialState()));
-        if (isFinal && !tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) addSingleCharTokenTransitions();
-
-    }
-
     /**
      * Non-initial states transition back to the initial state on a whitespace character.
      */
-    public StateImpl(final boolean isFinal, final TokenEnum tokenType, final boolean stdDelimiter, String label) {
+    private StateImpl(final boolean isFinal, final TokenEnum tokenType, final boolean stdDelimiter) {
         super(isFinal, tokenType);
-        this.label = label;
         if (stdDelimiter) {
             this.addTransition(new TransitionImpl(' ', getInitialState()));
             this.addTransition(new TransitionImpl('\t', getInitialState()));
@@ -62,11 +56,12 @@ public class StateImpl extends AbstractState {
         if (isFinal && !tokenType.getTokenCharType().equals(CharTypeEnum.SINGLE)) addSingleCharTokenTransitions();
     }
 
-    public StateImpl(final boolean isFinal, final TokenEnum tokenType, final boolean stdDelimiter, State fallback, String label) {
-        this(isFinal, tokenType, stdDelimiter, label);
+    private StateImpl(final boolean isFinal, final TokenEnum tokenType, final boolean stdDelimiter, State fallback) {
+        this(isFinal, tokenType, stdDelimiter);
         this.fallback = fallback;
     }
 
+    // Convenience method for adding single char transitions to all states other than string states.
     private void addSingleCharTokenTransitions() {
         for (TokenEnum tokenEnum : getSingleCharStates().keySet()) {
             TransitionImpl trans = null;
@@ -83,6 +78,14 @@ public class StateImpl extends AbstractState {
         }
     }
 
+    /**
+     * How to handle invalid characters. Single-char should immediately fail (fallback is null) Strings and identifiers
+     * ought to flag the dfa to abort, but continue until delimited.
+     *
+     * @param c
+     * @param dfa
+     * @return
+     */
     @Override
     public State attemptFallback(final Character c, final DFAImpl dfa) {
         if (this.fallback == null)
