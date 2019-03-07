@@ -20,7 +20,7 @@ public interface State {
      * @param transition Transition object representing the transition from State A to State B
      * @return
      */
-    State addTransition(final Transition transition);
+    void addTransition(final Transition transition);
 
     /**
      * Given Character c, transition to a the next valid State.

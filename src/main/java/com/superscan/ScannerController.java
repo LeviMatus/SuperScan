@@ -104,13 +104,13 @@ public class ScannerController {
         State S76 = new StateImpl(true, TokenEnum.IDENTIFIER, "S76");
 
         // Initialize State Transitions
-        S1 = S1.addTransition(new TransitionImpl('0', S11));
-        S1 = S1.addTransition(new TransitionImpl('-', S9));
-        S1 = S1.addTransition(new TransitionImpl('+', S9));
-        S1 = S1.addTransition(new TransitionImpl('.', S13));
-        S1 = S1.addTransition(new TransitionImpl('"', S14));
-        S1 = S1.addTransition(new TransitionImpl(';', S42));
-        S1 = S1.addTransition(new TransitionImpl('#', S20));
+        S1.addTransition(new TransitionImpl('0', S11));
+        S1.addTransition(new TransitionImpl('-', S9));
+        S1.addTransition(new TransitionImpl('+', S9));
+        S1.addTransition(new TransitionImpl('.', S13));
+        S1.addTransition(new TransitionImpl('"', S14));
+        S1.addTransition(new TransitionImpl(';', S42));
+        S1.addTransition(new TransitionImpl('#', S20));
         S1.addTransition(new TransitionImpl('(', S39));
         S1.addTransition(new TransitionImpl(')', S40));
         S1.addTransition(new TransitionImpl('[', S41));
@@ -119,18 +119,18 @@ public class ScannerController {
         S1.addTransition(new TransitionImpl('}', S45));
         S1.addTransition(new TransitionImpl('\'', S38));
         S1.addTransition(new TransitionImpl('=', S76));
-        S3 = S3.addTransition(new TransitionImpl('-', S6));
-        S3 = S3.addTransition(new TransitionImpl('+', S6));
-        S9 = S9.addTransition(new TransitionImpl('.', S13));
-        S11 = S11.addTransition(new TransitionImpl('b', S2));
-        S11 = S11.addTransition(new TransitionImpl('x', S4));
-        S11 = S11.addTransition(new TransitionImpl('.', S13));
-        S12 = S12.addTransition(new TransitionImpl('.', S13));
-        S14 = S14.addTransition(new TransitionImpl(S14, '"', '\\'));
-        S14 = S14.addTransition(new TransitionImpl('"', S15));
-        S14 = S14.addTransition(new TransitionImpl('\\', S16));
-        S16 = S16.addTransition(new TransitionImpl('n', S14));
-        S16 = S16.addTransition(new TransitionImpl('t', S14));
+        S3.addTransition(new TransitionImpl('-', S6));
+        S3.addTransition(new TransitionImpl('+', S6));
+        S9.addTransition(new TransitionImpl('.', S13));
+        S11.addTransition(new TransitionImpl('b', S2));
+        S11.addTransition(new TransitionImpl('x', S4));
+        S11.addTransition(new TransitionImpl('.', S13));
+        S12.addTransition(new TransitionImpl('.', S13));
+        S14.addTransition(new TransitionImpl(S14, '"', '\\'));
+        S14.addTransition(new TransitionImpl('"', S15));
+        S14.addTransition(new TransitionImpl('\\', S16));
+        S16.addTransition(new TransitionImpl('n', S14));
+        S16.addTransition(new TransitionImpl('t', S14));
         S20.addTransition(new TransitionImpl('t', S21));
         S20.addTransition(new TransitionImpl('f', S21));
         S20.addTransition(new TransitionImpl('\\', S22));
@@ -150,37 +150,37 @@ public class ScannerController {
         S35.addTransition(new TransitionImpl('i', S36));
         S36.addTransition(new TransitionImpl('n', S31));
 
-        S42 = S42.addTransition(new TransitionImpl('\n', S1));
-        S42 = S42.addTransition(new TransitionImpl(S42, '\n'));
+        S42.addTransition(new TransitionImpl('\n', S1));
+        S42.addTransition(new TransitionImpl(S42, '\n'));
 
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
                 Character digit = Character.forDigit(i, 10);
                 if (i == 0 || i == 1) { // binary number transitions;
-                    S2 = S2.addTransition(new TransitionImpl(digit, S8));
-                    S8 = S8.addTransition(new TransitionImpl(digit, S8));
+                    S2.addTransition(new TransitionImpl(digit, S8));
+                    S8.addTransition(new TransitionImpl(digit, S8));
                 }
-                if (i > 0) S1 = S1.addTransition(new TransitionImpl(digit, S12));
+                if (i > 0) S1.addTransition(new TransitionImpl(digit, S12));
                 if (i <= 3) {
-                    S16 = S16.addTransition(new TransitionImpl(digit, S18));
+                    S16.addTransition(new TransitionImpl(digit, S18));
                     S22.addTransition(new TransitionImpl(digit, S24));
                 }
                 if (CharUtils.charInRange(digit, 0, 7)) {
-                    S18 = S18.addTransition(new TransitionImpl(digit, S19));
-                    S19 = S19.addTransition(new TransitionImpl(digit, S14));
+                    S18.addTransition(new TransitionImpl(digit, S19));
+                    S19.addTransition(new TransitionImpl(digit, S14));
                     S24.addTransition(new TransitionImpl(digit, S25));
                     S25.addTransition(new TransitionImpl(digit, S23));
                 }
-                S3 = S3.addTransition(new TransitionImpl(digit, S7));
-                S4 = S4.addTransition(new TransitionImpl(digit, S10));
-                S5 = S5.addTransition(new TransitionImpl(digit, S5));
-                S6 = S6.addTransition(new TransitionImpl(digit, S7));
-                S7 = S7.addTransition(new TransitionImpl(digit, S7));
-                S9 = S9.addTransition(new TransitionImpl(digit, S12));
-                S10 = S10.addTransition(new TransitionImpl(digit, S10));
-                S11 = S11.addTransition(new TransitionImpl(digit, S12));
-                S12 = S12.addTransition(new TransitionImpl(digit, S12));
-                S13 = S13.addTransition(new TransitionImpl(digit, S5));
+                S3.addTransition(new TransitionImpl(digit, S7));
+                S4.addTransition(new TransitionImpl(digit, S10));
+                S5.addTransition(new TransitionImpl(digit, S5));
+                S6.addTransition(new TransitionImpl(digit, S7));
+                S7.addTransition(new TransitionImpl(digit, S7));
+                S9.addTransition(new TransitionImpl(digit, S12));
+                S10.addTransition(new TransitionImpl(digit, S10));
+                S11.addTransition(new TransitionImpl(digit, S12));
+                S12.addTransition(new TransitionImpl(digit, S12));
+                S13.addTransition(new TransitionImpl(digit, S5));
                 S76.addTransition(new TransitionImpl(digit, S76));
             }
 
@@ -204,8 +204,9 @@ public class ScannerController {
     }
 
     private State addUpperAndLowercase(State state, State next, int i) {
-        state = state.addTransition(new TransitionImpl((char) ('a' + i), next));
-        return state.addTransition(new TransitionImpl((char) ('A' + i), next));
+        state.addTransition(new TransitionImpl((char) ('a' + i), next));
+        state.addTransition(new TransitionImpl((char) ('A' + i), next));
+        return state;
     }
 
     private void handleValidTokens() {

@@ -52,9 +52,8 @@ public abstract class AbstractState implements State {
      * @param transition Transition object representing the transition from State A to State B
      * @return this State
      */
-    public State addTransition(Transition transition) {
+    public void addTransition(Transition transition) {
         this.transitions.add(transition);
-        return this;
     }
 
     /**
