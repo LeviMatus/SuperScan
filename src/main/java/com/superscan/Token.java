@@ -30,6 +30,10 @@ public class Token {
         this.type = type;
     }
 
+    public TokenEnum getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         if (type == null || type.equals(TokenEnum.INVALID) || type.equals(TokenEnum.INDETERMINATE))

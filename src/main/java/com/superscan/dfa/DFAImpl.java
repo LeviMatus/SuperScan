@@ -43,6 +43,18 @@ public final class DFAImpl implements DFA {
      */
     public List<Token> getAcceptedTokens() {return this.acceptedTokens;}
 
+    public Token getPendingToken() {
+        return pendingToken;
+    }
+
+    public void setLineNum(Integer lineNum) {
+        this.lineNum = lineNum;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
     /**
      *
      * @return boolean flag indicating DFA status.
@@ -67,8 +79,10 @@ public final class DFAImpl implements DFA {
      */
     public void handleWhitespace(Character c) {
         Optional<Map<String, Integer>> newlineOffset = this.pendingToken.handleMultilineStrings();
-
-        if (c.equals('\n')) {
+        if (c == null) {
+            this.start += this.offset - 1;
+            this.offset = 1;
+        } else if (c.equals('\n')) {
             this.lineNum++;
             this.start = 1;
             this.offset = 1;
@@ -81,22 +95,18 @@ public final class DFAImpl implements DFA {
         this.pendingToken = new Token(this.lineNum, this.start);
     }
 
-    private void acceptToken(TokenEnum tokenEnum) {
-        this.pendingToken.setType(tokenEnum);
-        this.acceptedTokens.add(this.pendingToken);
-    }
-
     /**
      * Delimit a token if its char construction is longer than 0.
      */
-    public void delimitToken() {
-        if (this.pendingToken.getVal().length() > 0) {
-            Optional<KeywordEnum> keyword = keywords.stream()
+    public void delimitToken(Character c) {
+        if (this.getPendingToken().getType().equals(TokenEnum.IDENTIFIER)) {
+            keywords.stream()
                     .filter(keywordEnum -> keywordEnum.isKeyword(this.pendingToken.getVal()))
-                    .findAny();
-            if (keyword.isPresent()) acceptToken(keyword.get().getToken());
-            else acceptToken(this.current.getTokenType());
+                    .findAny()
+                    .ifPresent((keywordEnum -> pendingToken.setType(keywordEnum.getToken())));
         }
+        this.acceptedTokens.add(this.pendingToken);
+        handleWhitespace(c);
     }
 
     /**
@@ -114,15 +124,6 @@ public final class DFAImpl implements DFA {
     public void addCharToToken(Character c) {
         this.pendingToken.addChar(c);
         this.offset++;
-    }
-
-    public void addSingleCharToken(Character c, State state) {
-        this.pendingToken.addChar(c);
-        this.acceptToken(state.getTokenType());
-    }
-
-    public void decrementOffset() {
-        this.offset--;
     }
 
     /**

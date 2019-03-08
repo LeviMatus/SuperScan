@@ -91,26 +91,12 @@ public abstract class AbstractState implements State {
                 .findAny()
                 .orElseGet(() -> attemptFallback(c, dfa));
 
-         // If this is a single-char accepting state then immediately delimit it. Other chars are allowed to follow.
-        if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE)) {
-            if (!this.equals(initialState)) {
-                delimitSingleCharacterToken(c, dfa);
-                singleCharStates.get(result.getTokenType());
-            }
-            return delimitSingleCharacterToken(c, result, dfa);
+        if (result.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE) || result.equals(initialState)) {
+            return delimit(dfa, c, result);
         }
-
-        // Standard delimitation case. Whitespace.
-        if (result.equals(initialState) )
-            return delimitWithWhitespace(c, result, dfa);
 
         dfa.addCharToToken(c);
         return result;
-    }
-
-    // Fallback to a state upon errors to finish parsing Multi-Char tokens.
-    public State attemptFallback(final Character c, final DFAImpl dfa) {
-        throw new IllegalArgumentException("FAILURE");
     }
 
     /**
@@ -124,28 +110,39 @@ public abstract class AbstractState implements State {
      * @return state
      * @throws InvalidTokenException if the multi-char token is invalid and the DFA has been flagged so already.
      */
-    public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) throws InvalidTokenException {
+    public State delimit(DFAImpl dfa, Character c, State state) throws InvalidTokenException {
         if (dfa.isAborting()) throw dfa.generateError();
-        if (isValidToken(this.tokenType)) {
-            dfa.delimitToken();
-            dfa.handleWhitespace(c);
+
+        if (!this.equals(initialState) && state.equals(initialState)) {
+            dfa.getPendingToken().setType(this.getTokenType());
+            dfa.delimitToken(c);
+            return state;
         }
-        else throw dfa.generateError();
-        return state;
+
+        if (state.getTokenType().getTokenCharType().equals(CharTypeEnum.SINGLE)) {
+
+            if (dfa.getPendingToken().getVal().length() != 0) {
+                dfa.getPendingToken().setType(this.getTokenType());
+                dfa.delimitToken(null);
+            }
+
+            dfa.getPendingToken().addChar(c);
+            dfa.getPendingToken().setType(state.getTokenType());
+            dfa.delimitToken(c);
+            return initialState;
+        }
+
+        if (state.equals(initialState)) {
+            dfa.handleWhitespace(c);
+            return state;
+        }
+
+        throw dfa.generateError();
     }
 
-    // special case where singe char token is being read after another token. Offset should not increase.
-    private void delimitSingleCharacterToken(final Character c, final DFAImpl dfa) {
-        dfa.delimitToken();
-        dfa.decrementOffset();
-        dfa.handleWhitespace(c);
-    }
-
-    // singe-char token is read from the initial state. Offset should increase.
-    private State delimitSingleCharacterToken(final Character c, final State state, final DFAImpl dfa) {
-        dfa.addSingleCharToken(c, state);
-        dfa.handleWhitespace(c);
-        return initialState;
+    // Fallback to a state upon errors to finish parsing Multi-Char tokens.
+    public State attemptFallback(final Character c, final DFAImpl dfa) {
+        throw new IllegalArgumentException("FAILURE");
     }
 
 }

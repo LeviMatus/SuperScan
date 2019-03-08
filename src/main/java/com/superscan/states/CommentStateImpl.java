@@ -23,7 +23,7 @@ public class CommentStateImpl extends AbstractState {
     }
 
     @Override
-    public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) {
+    public State delimit(DFAImpl dfa, Character c, State state) {
         dfa.handleWhitespace(c);
         return state;
     }

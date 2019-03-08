@@ -27,10 +27,10 @@ public class InitialStateImpl extends AbstractState {
         setInitialState(this);
     }
 
-    @Override
-    public State delimitWithWhitespace(final Character c, final State state, final DFAImpl dfa) {
-        dfa.handleWhitespace(c);
-        return state;
-    }
+//    @Override
+//    public State delimit(DFAImpl dfa, Character c, State state) {
+//        dfa.handleWhitespace(c);
+//        return state;
+//    }
 
 }
