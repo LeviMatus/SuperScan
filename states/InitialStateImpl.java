@@ -1,10 +1,12 @@
-package com.superscan.states;
+package superscan.states;
 
-import com.superscan.dfa.DFAImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.CharTypeEnum;
-import com.superscan.enums.TokenEnum;
-import com.superscan.transitions.TransitionImpl;
+import superscan.dfa.DFAImpl;
+import superscan.dfa.InvalidTokenException;
+import superscan.enums.CharTypeEnum;
+import superscan.enums.TokenEnum;
+import superscan.transitions.TransitionImpl;
+import superscan.states.AbstractState;
+
 
 public class InitialStateImpl extends AbstractState {
 

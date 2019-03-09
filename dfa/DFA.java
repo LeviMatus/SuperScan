@@ -6,9 +6,10 @@
  * The interface itself hasn't changed much. We enforce that we should be able to return the accepted tokens.
  */
 
-package com.superscan.dfa;
+package superscan.dfa;
 
-import com.superscan.Token;
+import superscan.Token;
+import superscan.dfa.InvalidTokenException;
 
 import java.util.List;
 

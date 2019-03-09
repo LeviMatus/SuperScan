@@ -6,9 +6,9 @@
  * This interface remains mostly untouched, aside from renaming a few methods more to our taste.
  */
 
-package com.superscan.transitions;
+package superscan.transitions;
 
-import com.superscan.states.State;
+import superscan.states.State;
 
 public interface Transition {
 

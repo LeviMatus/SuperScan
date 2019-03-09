@@ -1,4 +1,4 @@
-package com.superscan.enums;
+package superscan.enums;
 
 public enum CharTypeEnum {
 

@@ -13,13 +13,14 @@
  * and consolidate some of the delimitation logic with the DFA as well.
  */
 
-package com.superscan.states;
+package superscan.states;
 
-import com.superscan.dfa.DFAImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.CharTypeEnum;
-import com.superscan.enums.TokenEnum;
-import com.superscan.transitions.Transition;
+import superscan.dfa.DFAImpl;
+import superscan.dfa.InvalidTokenException;
+import superscan.enums.CharTypeEnum;
+import superscan.enums.TokenEnum;
+import superscan.transitions.Transition;
+import superscan.states.State;
 
 import java.util.ArrayList;
 import java.util.HashMap;

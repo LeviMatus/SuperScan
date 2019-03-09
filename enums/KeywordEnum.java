@@ -1,6 +1,6 @@
-package com.superscan.enums;
+package superscan.enums;
 
-import java.security.Key;
+import superscan.enums.TokenEnum;
 
 public enum KeywordEnum {
     QOUTE(TokenEnum.MULTI_QUOTE, "qoute"),

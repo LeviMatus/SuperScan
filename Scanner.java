@@ -1,4 +1,4 @@
-import com.superscan.ScannerController;
+import superscan.ScannerController;
 
 public class Scanner {
 

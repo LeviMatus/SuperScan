@@ -1,4 +1,4 @@
-package com.superscan.utils;
+package superscan.utils;
 
 public class CharUtils {
 

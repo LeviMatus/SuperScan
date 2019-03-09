@@ -1,8 +1,11 @@
-package com.superscan.states;
+package superscan.states;
 
-import com.superscan.dfa.DFAImpl;
-import com.superscan.enums.TokenEnum;
-import com.superscan.transitions.TransitionImpl;
+import superscan.dfa.DFAImpl;
+import superscan.enums.TokenEnum;
+import superscan.transitions.TransitionImpl;
+import superscan.states.AbstractState;
+import superscan.states.State;
+
 
 public class CommentStateImpl extends AbstractState {
 

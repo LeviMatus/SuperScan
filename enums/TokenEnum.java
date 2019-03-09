@@ -1,4 +1,6 @@
-package com.superscan.enums;
+package superscan.enums;
+
+import superscan.enums.CharTypeEnum;
 
 public enum TokenEnum {
     INVALID("INVALID", CharTypeEnum.NA),

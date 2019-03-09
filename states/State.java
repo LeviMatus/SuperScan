@@ -7,12 +7,12 @@
  * We have added a default method here shared between all State implementations
  */
 
-package com.superscan.states;
+package superscan.states;
 
-import com.superscan.dfa.DFAImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.TokenEnum;
-import com.superscan.transitions.Transition;
+import superscan.dfa.DFAImpl;
+import superscan.dfa.InvalidTokenException;
+import superscan.enums.TokenEnum;
+import superscan.transitions.Transition;
 
 public interface State {
 

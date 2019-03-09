@@ -6,16 +6,18 @@
  * This has changed a lot. We have to keep track of far more information that does Baeldung.
  */
 
-package com.superscan.dfa;
+package superscan.dfa;
 
-import com.superscan.Token;
-import com.superscan.enums.KeywordEnum;
-import com.superscan.enums.TokenEnum;
-import com.superscan.states.State;
+import superscan.Token;
+import superscan.enums.KeywordEnum;
+import superscan.enums.TokenEnum;
+import superscan.states.State;
+import superscan.dfa.InvalidTokenException;
 
 import java.util.*;
 
-public final class DFAImpl implements DFA {
+
+public final class DFAImpl implements superscan.dfa.DFA {
 
     private State current;
     private Integer start, lineNum, offset;

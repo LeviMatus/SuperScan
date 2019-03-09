@@ -8,9 +8,11 @@
  * states on a valid transition, but also on a "not in the set of" conditions.
  */
 
-package com.superscan.transitions;
+package superscan.transitions;
 
-import com.superscan.states.State;
+import superscan.states.State;
+import superscan.transitions.Transition;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;

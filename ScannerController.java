@@ -20,18 +20,20 @@
  * classes we've adopted from Baeldung.
  */
 
-package com.superscan;
+package superscan;
 
-import com.superscan.dfa.DFA;
-import com.superscan.dfa.DFAImpl;
-import com.superscan.dfa.InvalidTokenException;
-import com.superscan.enums.TokenEnum;
-import com.superscan.states.CommentStateImpl;
-import com.superscan.states.InitialStateImpl;
-import com.superscan.states.State;
-import com.superscan.states.StateImpl;
-import com.superscan.transitions.TransitionImpl;
-import com.superscan.utils.CharUtils;
+import superscan.dfa.DFA;
+import superscan.dfa.DFAImpl;
+import superscan.dfa.InvalidTokenException;
+import superscan.enums.TokenEnum;
+import superscan.states.CommentStateImpl;
+import superscan.states.InitialStateImpl;
+import superscan.states.State;
+import superscan.states.StateImpl;
+import superscan.transitions.TransitionImpl;
+import superscan.utils.CharUtils;
+import superscan.Token;
+
 
 import java.io.BufferedReader;
 import java.io.File;
