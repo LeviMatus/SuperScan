@@ -32,7 +32,6 @@ import superscan.states.State;
 import superscan.states.StateImpl;
 import superscan.transitions.TransitionImpl;
 import superscan.utils.CharUtils;
-import superscan.Token;
 
 
 import java.io.BufferedReader;
@@ -64,7 +63,7 @@ public class ScannerController {
         // States to belong to DFA
         State S1 = new InitialStateImpl();
 
-        State S38 = new StateImpl(true, TokenEnum.SINGLE_QOUTE);
+        State S38 = new StateImpl(true, TokenEnum.QUOTEMK);
         State S39 = new StateImpl(true, TokenEnum.OPENRD);
         State S40 = new StateImpl(true, TokenEnum.CLOSERD);
         State S41 = new StateImpl(true, TokenEnum.OPENSQ);

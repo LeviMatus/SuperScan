@@ -1,9 +1,7 @@
 package superscan.enums;
 
-import superscan.enums.TokenEnum;
-
 public enum KeywordEnum {
-    QOUTE(TokenEnum.MULTI_QUOTE, "qoute"),
+    QUOTE(TokenEnum.QUOTE, "quote"),
     LAMNDA(TokenEnum.LAMBDA, "lambda"),
     DEFINE(TokenEnum.DEFINE, "define"),
     LET(TokenEnum.LET, "let"),

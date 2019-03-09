@@ -4,8 +4,6 @@ import superscan.dfa.DFAImpl;
 import superscan.enums.CharTypeEnum;
 import superscan.enums.TokenEnum;
 import superscan.transitions.TransitionImpl;
-import superscan.states.AbstractState;
-import superscan.states.State;
 
 
 public class StateImpl extends AbstractState {
@@ -75,7 +73,7 @@ public class StateImpl extends AbstractState {
                 case OPENCU: trans = new TransitionImpl('{', getSingleCharStates().get(tokenEnum)); break;
                 case CLOSESQ: trans = new TransitionImpl(']', getSingleCharStates().get(tokenEnum)); break;
                 case CLOSECU: trans = new TransitionImpl('}', getSingleCharStates().get(tokenEnum)); break;
-                case SINGLE_QOUTE: trans = new TransitionImpl('\'', getSingleCharStates().get(tokenEnum)); break;
+                case QUOTEMK: trans = new TransitionImpl('\'', getSingleCharStates().get(tokenEnum)); break;
             }
             this.addTransition(trans);
         }
