@@ -1,5 +1,7 @@
 package superscan.enums;
 
+import superscan.enums.TokenEnum;
+
 public enum KeywordEnum {
     QUOTE(TokenEnum.QUOTE, "quote"),
     LAMNDA(TokenEnum.LAMBDA, "lambda"),

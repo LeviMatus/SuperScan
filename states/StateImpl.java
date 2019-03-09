@@ -4,6 +4,8 @@ import superscan.dfa.DFAImpl;
 import superscan.enums.CharTypeEnum;
 import superscan.enums.TokenEnum;
 import superscan.transitions.TransitionImpl;
+import superscan.states.AbstractState;
+import superscan.states.State;
 
 
 public class StateImpl extends AbstractState {

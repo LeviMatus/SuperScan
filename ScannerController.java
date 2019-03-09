@@ -32,6 +32,7 @@ import superscan.states.State;
 import superscan.states.StateImpl;
 import superscan.transitions.TransitionImpl;
 import superscan.utils.CharUtils;
+import superscan.Token;
 
 
 import java.io.BufferedReader;
