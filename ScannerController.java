@@ -124,7 +124,7 @@ public class ScannerController {
         S1.addTransition(new TransitionImpl('{', S44));
         S1.addTransition(new TransitionImpl('}', S45));
         S1.addTransition(new TransitionImpl('\'', S38));
-        S1.addTransition(new TransitionImpl('=', S76));
+//        S1.addTransition(new TransitionImpl('=', S76));
         S3.addTransition(new TransitionImpl('-', S6));
         S3.addTransition(new TransitionImpl('+', S6));
         S9.addTransition(new TransitionImpl('.', S13));
@@ -159,6 +159,15 @@ public class ScannerController {
         S42.addTransition(new TransitionImpl('\n', S1));
         S42.addTransition(new TransitionImpl(S42, '\n'));
 
+
+        addTransitionsInRange(S1, S76, 32, 127,
+                34, 35, 39, 40, 41, 48, 49,
+                50, 51, 52, 53, 54, 55, 56, 57, 59,
+                91, 93, 123, 125);
+
+        addTransitionsInRange(S76, S76, 32, 127,
+                34, 35, 39, 40, 41, 59, 91, 93, 123, 125);
+
         for (int i = 0; i < 26; i++) {
             if (i < 10) { // Numbered transitions
                 Character digit = Character.forDigit(i, 10);
@@ -187,7 +196,6 @@ public class ScannerController {
                 S11.addTransition(new TransitionImpl(digit, S12));
                 S12.addTransition(new TransitionImpl(digit, S12));
                 S13.addTransition(new TransitionImpl(digit, S5));
-                S76.addTransition(new TransitionImpl(digit, S76));
             }
 
             if ('e' == ('a' + i)) {
@@ -196,10 +204,8 @@ public class ScannerController {
                 S5 = addUpperAndLowercase(S5, S3, i);
             }
 
-            addUpperAndLowercase(S1, S76, i);
             S4 = addUpperAndLowercase(S4, S10, i);
             S10 = addUpperAndLowercase(S10, S10, i);
-            addUpperAndLowercase(S76, S76, i);
         }
 
         fsm = new DFAImpl(S1);
@@ -218,6 +224,14 @@ public class ScannerController {
     private void handleValidTokens() {
         for (Token token : fsm.getAcceptedTokens()) {
             System.out.println(token.toString());
+        }
+    }
+
+    private void addTransitionsInRange(State start, State stop, Integer min, Integer max, int... ignore) {
+        for (int i = min; i <= max; i++) {
+            if (Arrays.asList(ignore).contains(i)) continue;
+            Character c = (char) i;
+            start.addTransition(new TransitionImpl(c, stop));
         }
     }
 
